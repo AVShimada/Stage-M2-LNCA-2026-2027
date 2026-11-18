@@ -3,6 +3,7 @@
 ├── cahier_labo.md
 ├── env
 │   └── version.txt
+├── .gitignore
 ├── output
 │   └── README.md
 ├── README.md
@@ -10,4 +11,4 @@
     ├── architecture_tree.sh
     └── README.md
 
-4 directories, 7 files
+4 directories, 8 files
