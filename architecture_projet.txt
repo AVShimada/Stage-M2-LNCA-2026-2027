@@ -1,0 +1,13 @@
+/home/aurelio/Server/Aurelio_Stage_M2
+├── architecture_projet.txt
+├── cahier_labo.md
+├── env
+│   └── version.txt
+├── output
+│   └── README.md
+├── README.md
+└── script
+    ├── architecture_tree.sh
+    └── README.md
+
+4 directories, 7 files

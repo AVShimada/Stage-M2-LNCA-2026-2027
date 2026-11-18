@@ -1,0 +1,1 @@
+This folder countain all the script to analysis the dataset 1000 brains
