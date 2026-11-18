@@ -1,9 +1,17 @@
 /home/aurelio/Server/Aurelio_Stage_M2
 ├── architecture_projet.txt
+├── article_scientifique
+│   ├── Battaglia-Dynamic Functional Connectivity between order and randomness and its evolution across the human adult lifespan-2020-NeuroImage.pdf
+│   ├── Deco-Emerging concepts for the dynamical organization of resting-state activity in the brain-2011-Nature Reviews Neuroscience.pdf
+│   ├── Hansen-Functional connectivity dynamics- modeling the switching behavior of the resting state--2015-NeuroImage.pdf
+│   ├── journal.pbio.3003916.pdf
+│   └── README.md
 ├── cahier_labo.md
 ├── env
 │   └── version.txt
 ├── .gitignore
+├── memoire
+│   └── README.md
 ├── output
 │   └── README.md
 ├── README.md
@@ -11,4 +19,4 @@
     ├── architecture_tree.sh
     └── README.md
 
-4 directories, 8 files
+6 directories, 14 files

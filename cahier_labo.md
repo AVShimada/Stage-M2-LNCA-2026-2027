@@ -18,6 +18,10 @@ Slurm documentation: https://funsyslurm.netlify.app/#usage
 
 Create initiale file/folder for the project on the cluster:
 
+run the script: architecture_tree.sh
+
+output architecture_projet.txt:
+
 /home/aurelio/Server/Aurelio_Stage_M2
 ├── cahier_labo.md
 ├── env
@@ -28,4 +32,41 @@ Create initiale file/folder for the project on the cluster:
 └── script
     └── README.md
 
-Initialise Git, pull the project and push on Github.
+Initialise Git, pull the project and push on Github:
+
+```bash
+git init
+git add .
+git status
+git commit -m "First Commit"
+git branch -M main
+git remote add origin https://github.com/AVShimada/Stage-M2-LNCA-2026-2027.git
+git push -u origin main
+```
+
+New Architecture of the project:
+
+run the script: architecture_tree.sh
+
+output:architecture_projet.txt:
+
+/home/aurelio/Server/Aurelio_Stage_M2
+├── architecture_projet.txt
+├── article_scientifique
+│   ├── Battaglia-Dynamic Functional Connectivity between order and randomness and its evolution across the human adult lifespan-2020-NeuroImage.pdf
+│   ├── Deco-Emerging concepts for the dynamical organization of resting-state activity in the brain-2011-Nature Reviews Neuroscience.pdf
+│   ├── Hansen-Functional connectivity dynamics- modeling the switching behavior of the resting state--2015-NeuroImage.pdf
+│   ├── journal.pbio.3003916.pdf
+│   └── README.md
+├── cahier_labo.md
+├── env
+│   └── version.txt
+├── .gitignore
+├── memoire
+│   └── README.md
+├── output
+│   └── README.md
+├── README.md
+└── script
+    ├── architecture_tree.sh
+    └── README.md
