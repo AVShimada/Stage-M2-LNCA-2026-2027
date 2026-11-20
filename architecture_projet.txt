@@ -1,22 +1,100 @@
 /home/aurelio/Server/Aurelio_Stage_M2
 ├── architecture_projet.txt
+├── archives
+│   └── patches
+│       └── couleurs_1000brains.patch
 ├── article_scientifique
 │   ├── Battaglia-Dynamic Functional Connectivity between order and randomness and its evolution across the human adult lifespan-2020-NeuroImage.pdf
 │   ├── Deco-Emerging concepts for the dynamical organization of resting-state activity in the brain-2011-Nature Reviews Neuroscience.pdf
 │   ├── Hansen-Functional connectivity dynamics- modeling the switching behavior of the resting state--2015-NeuroImage.pdf
 │   ├── journal.pbio.3003916.pdf
 │   └── README.md
-├── cahier_labo.md
+├── atlas
+│   ├── coordonnees_M1.csv
+│   └── labels_M1.txt
+├── cahier_labo_november.md
+├── config
+│   ├── cluster.env
+│   ├── cognition.json
+│   ├── cohorte.csv
+│   ├── jumeau.json
+│   ├── pilote.json
+│   └── suivi.json
 ├── env
+│   ├── requirements-1000brains.txt
 │   └── version.txt
 ├── .gitignore
 ├── memoire
 │   └── README.md
 ├── output
+│   ├── 01_apercu_sc_fc
+│   │   ├── 20261120T102605678818Z_sub-0001_ses-1_V4
+│   │   │   ├── data
+│   │   │   │   ├── fc_v1.npy
+│   │   │   │   ├── fc_v4.npy
+│   │   │   │   └── sc.npy
+│   │   │   ├── figures
+│   │   │   │   ├── fc_v1.pdf
+│   │   │   │   ├── fc_v1.png
+│   │   │   │   ├── fc_v4_adaptee.pdf
+│   │   │   │   ├── fc_v4_adaptee.png
+│   │   │   │   ├── fc_v4.pdf
+│   │   │   │   ├── fc_v4.png
+│   │   │   │   ├── sc.pdf
+│   │   │   │   └── sc.png
+│   │   │   ├── logs
+│   │   │   │   └── run.log
+│   │   │   ├── manifest.json
+│   │   │   └── README.md
+│   │   └── README.md
+│   ├── 02_comparaison_fcd_v1_v4
+│   │   ├── 20261120T104758822168Z_sub-0001_ses-1_V4
+│   │   │   ├── data
+│   │   │   │   ├── fcd_v1.npy
+│   │   │   │   ├── fcd_v4.npy
+│   │   │   │   ├── resume.json
+│   │   │   │   └── starts_TR.npy
+│   │   │   ├── figures
+│   │   │   │   ├── fcd_v1.pdf
+│   │   │   │   ├── fcd_v1.png
+│   │   │   │   ├── fcd_v4.pdf
+│   │   │   │   └── fcd_v4.png
+│   │   │   ├── logs
+│   │   │   │   └── run.log
+│   │   │   ├── manifest.json
+│   │   │   └── README.md
+│   │   └── README.md
+│   ├── 02_fcd_bold_10vol
+│   │   ├── 20261120T100504Z_sub-0001_ses-1_V4
+│   │   │   ├── data
+│   │   │   │   ├── fcd.npy
+│   │   │   │   └── starts_TR.npy
+│   │   │   ├── figures
+│   │   │   │   ├── fcd_article_cap05.pdf
+│   │   │   │   ├── fcd_article_cap05.png
+│   │   │   │   ├── fcd_article.pdf
+│   │   │   │   └── fcd_article.png
+│   │   │   ├── logs
+│   │   │   │   └── run.log
+│   │   │   ├── manifest.json
+│   │   │   └── README.md
+│   │   └── README.md
 │   └── README.md
 ├── README.md
-└── script
-    ├── architecture_tree.sh
-    └── README.md
+├── script
+│   ├── apercu_sc_fc.sh
+│   ├── architecture_tree.sh
+│   ├── cognition.py
+│   ├── cohorte.py
+│   ├── commun.py
+│   ├── comparer_fcd_v1_v4.sh
+│   ├── dynamique.py
+│   ├── graphes.py
+│   ├── jumeau.py
+│   ├── lancer_1000brains.sh
+│   ├── pipeline.py
+│   ├── README.md
+│   └── retracer_fcd.py
+└── WORKFLOW_1000BRAINS.md
 
-6 directories, 14 files
+25 directories, 73 files

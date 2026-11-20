@@ -1,0 +1,12 @@
+{
+  "V1": {
+    "n_fenetres": 287,
+    "n_paires_sans_chevauchement": 38503,
+    "chi_mediane_sans_chevauchement": 0.1985475090747004
+  },
+  "V4": {
+    "n_fenetres": 287,
+    "n_paires_sans_chevauchement": 38503,
+    "chi_mediane_sans_chevauchement": 0.14400992223773368
+  }
+}

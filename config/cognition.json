@@ -1,0 +1,32 @@
+{
+  "table": "",
+  "delimiter": "",
+  "id_column": "",
+  "age_column": "",
+  "education_column": "",
+  "session": "",
+  "missing_codes": [],
+  "min_tests": null,
+  "akt_min_age": 55,
+  "tests": {
+    "LPS_RRW_ProblemSolving": 1,
+    "AKT_TRW_SelectiveAttention": 1,
+    "Stroop_T3T2_Interference": -1,
+    "RWD_5_Punkte_FiguralFluency": 1,
+    "TMT_ARW_ProcessingSpeed": -1,
+    "TMT_BA_ConceptShifting": -1,
+    "BEN_RRW_FiguralMemory": 1,
+    "CBT_RVW_VisualSpatialWM_fw": 1,
+    "CBT_RRW_VisualSpatialWM_bw": 1,
+    "VPT_RW_VisualMemory": 1,
+    "ZNS_AVW_digitspan_fw": 1,
+    "ZNS_ARW_digitspan_bw": 1,
+    "RWT_PB2RW_PhonematicFluency": 1,
+    "RWT_SB2RW_SemanticFluency": 1,
+    "RWT_PGR2RW_PhonematicFluency_Switch": 1,
+    "RWT_SSF2RW_SemanticFluency_Switch": 1,
+    "AWST03P_Vocabulary": 1,
+    "BKW_1_5_VerbalMemory": 1,
+    "BKW_RWfv": 1
+  }
+}

@@ -1,0 +1,338 @@
+diff --git a/script/cognition.py b/script/cognition.py
+--- a/script/cognition.py
++++ b/script/cognition.py
+@@ -54,7 +54,7 @@
+         io.write_table(data/"acp_axes.csv",["test",*pcs],([k,*v] for k,v in zip(keys,vt.T)))
+         io.write_table(data/"acp_variance.csv",["component","fraction"],zip(pcs,variance))
+         def draw(fig,ax):
+-            ax.plot(np.arange(1,len(s)+1),np.cumsum(variance),"o-")
++            ax.plot(np.arange(1,len(s)+1),np.cumsum(variance),"o-",color="#4c72b0")
+             ax.set(xlabel="Nombre de composantes",ylabel="Fraction de variance cumulée",title="ACP cognitive descriptive")
+         io.figure(folder,"acp",draw)
+     print(folder)
+diff --git a/script/cohorte.py b/script/cohorte.py
+--- a/script/cohorte.py
++++ b/script/cohorte.py
+@@ -202,6 +202,7 @@
+                 labels0=labels
+             label_names=io.labels(io.source(records[0][0],"labels_bold"))
+             grouped={}
++            group_matrices = {}
+             for name,sel in groups.items():
+                 if not sel.any():
+                     continue
+@@ -209,7 +210,7 @@
+                 for key in ("sc","fc_fisher_z"):
+                     average=sum(np.load(paths[i]["statique"]/(key+".npy")) for i in np.flatnonzero(sel))/sel.sum()
+                     np.save(data/f"{key}_{name}.npy",average)
+-                    io.heatmap(out,key+"_"+name,average,f"{key} · {name} (n={sel.sum()})",signed=False)
++                    group_matrices.setdefault(key, {})[name] = average
+                     matrices["SC" if key=="sc" else "FC"]=average
+                 if args.reseaux:
+                     from graphes import graph_metrics
+@@ -218,13 +219,18 @@
+                         (folder/sub).mkdir(parents=True)
+                     graph_metrics(folder,label_names,matrices,records[0][0]["graphs"],42)
+                     grouped[name]={k:np.load(folder/f"data/{k}_consensus.npz")["labels"] for k in matrices}
++            for key, means in group_matrices.items():
++                limits = (min(m.min() for m in means.values()), max(m.max() for m in means.values()))
++                for name, average in means.items():
++                    io.heatmap(out, key+"_"+name, average, f"{key} · {name} (n={groups[name].sum()})", limits=limits)
+             if len(grouped)==2:
+                 for key in ("FC","SC"):
+                     young,old=grouped["moins55"][key],grouped["55plus"][key]
+                     counts=np.zeros((int(young.max()),int(old.max())),dtype=int)
+                     np.add.at(counts,(young-1,old-1),1)
+                     io.write_table(data/f"transitions_{key}.csv",["roi","module_moins55","module_55plus"],zip(label_names,young,old))
+-                    io.heatmap(out,"transitions_"+key,counts,"Correspondance des modules · nombre de régions","Module (indice à partir de 0)",signed=False)
++                    io.heatmap(out,"transitions_"+key,counts,"Correspondance des modules · nombre de régions",
++                               "Module (indice à partir de 0)",style="transitions_"+key.lower())
+             if args.mc:
+                 valid=np.isfinite(a[:,0])
+                 if valid.sum()<3:
+@@ -246,12 +252,13 @@
+                     for j in idx:
+                         members.append((ids[j],a[j,0],g+1,int(j==i)))
+                     fcd=np.load(paths[i]["m1"]/"fcd_20s.npy")
+-                    io.heatmap(out,f"fcd_tertile{g+1}",fcd,f"FCD individuelle · {ids[i]} · {a[i,0]:g} ans","Fenêtre retenue")
+-                    io.heatmap(out,f"mc_tertile{g+1}",mean[::5,::5],f"MC moyenne · tertile {g+1} (n={len(idx)})","Indice de lien (× 5)")
++                    io.heatmap(out,f"fcd_tertile{g+1}",fcd,f"FCD individuelle · {ids[i]} · {a[i,0]:g} ans","Fenêtre retenue",style="fcd_m1")
++                    io.heatmap(out,f"mc_tertile{g+1}",mean[::5,::5],f"MC moyenne · tertile {g+1} (n={len(idx)})","Indice de lien (× 5)",style="mc_m1")
+                 io.write_table(data/"sujets_tertiles.csv",["subject","age","tertile","exemple_FCD"],members)
+             for j,label in enumerate(cols[1:6],1):
+                 def draw(fig,ax):
+-                    ax.scatter(a[:,0],a[:,j],s=10,alpha=0.4)
++                    points=ax.scatter(a[:,0],a[:,j],c=a[:,0],cmap="viridis",s=10,alpha=0.75)
++                    fig.colorbar(points,ax=ax,label="Âge (ans)")
+                     ax.set(xlabel="Âge (ans)",ylabel=label,title=label+" selon l’âge")
+                 io.figure(out,label+"_age",draw)
+     print(out)
+diff --git a/script/commun.py b/script/commun.py
+--- a/script/commun.py
++++ b/script/commun.py
+@@ -213,24 +213,45 @@
+     return out, m
+ 
+ 
+-def figure(out, name, draw):
++MODEL_COLORS = {"mfm": "#0072BD", "tmfm": "#D95319"}
++SPEED_STYLES = {"emp": ((0.1, 0.1, 0.5), "-"), "phase": ("g", "--"), "shuffle": ("r", ":")}
++
++
++def figure(out, name, draw, *, dark=False):
+     import matplotlib
+     matplotlib.use("Agg")
+     import matplotlib.pyplot as plt
+-    fig, ax = plt.subplots(figsize=(7.6, 5.2), layout="constrained")
+-    try:
+-        draw(fig, ax)
+-        for ext in ("png", "pdf"):
+-            fig.savefig(out / "figures" / f"{name}.{ext}", dpi=150)
+-    finally:
+-        plt.close(fig)
+-
+-
+-def heatmap(out, name, matrix, title, axes="Région", signed=True):
++    with plt.style.context("dark_background" if dark else "default"):
++        fig, ax = plt.subplots(figsize=(7.6, 5.2), layout="constrained")
++        try:
++            draw(fig, ax)
++            for ext in ("png", "pdf"):
++                fig.savefig(out / "figures" / f"{name}.{ext}", dpi=150)
++        finally:
++            plt.close(fig)
++
++
++def heatmap(out, name, matrix, title, axes="Région", signed=True, *, style=None, limits=None):
++    # Le bloc historique du pilote appelle simplement heatmap(..., "fcd", ...).
++    if style is None:
++        style = "fcd_article" if name == "fcd" else "matrice_m1"
++    palettes = {
++        "matrice_m1": ("turbo", (-1, 1) if signed else (None, None), False),
++        "fcd_m1": ("turbo", (0, 0.5), True),
++        "fcd_article": ("jet", (0, 1), False),
++        "mc_m1": ("turbo", (0, 0.1), True),
++        "transitions_fc": ("Blues", (0, None), False),
++        "transitions_sc": ("Greens", (0, None), False),
++    }
++    cmap, bounds, dark = palettes[style]
++    low, high = bounds if limits is None else limits
+     def draw(fig, ax):
+-        opts = dict(vmin=-1, vmax=1, cmap="RdBu_r") if signed else dict(cmap="viridis")
+-        im = ax.imshow(matrix, aspect="auto", interpolation="nearest", origin="lower", **opts)
++        im = ax.imshow(matrix, aspect="auto", interpolation="nearest", origin="lower",
++                       cmap=cmap, vmin=low, vmax=high)
+         ax.set(xlabel=axes, ylabel=axes, title=title)
+-        fig.colorbar(im, ax=ax)
+-    figure(out, name, draw)
+-
++        below = low is not None and np.nanmin(matrix) < low
++        above = high is not None and np.nanmax(matrix) > high
++        extend = {(False,False):"neither", (True,False):"min",
++                  (False,True):"max", (True,True):"both"}[below, above]
++        fig.colorbar(im, ax=ax, extend=extend)
++    figure(out, name, draw, dark=dark)
+diff --git a/script/dynamique.py b/script/dynamique.py
+--- a/script/dynamique.py
++++ b/script/dynamique.py
+@@ -2,7 +2,7 @@
+ import math
+ import numpy as np
+ 
+-from commun import EDGE, figure, heatmap, write_json, write_table
++from commun import EDGE, SPEED_STYLES, figure, heatmap, write_json, write_table
+ 
+ PERCENTILES = (5, 25, 50, 75, 95)
+ TARGETS = [f"{v}_p{p}" for v in ("chi", "nu") for p in PERCENTILES]
+@@ -136,9 +136,10 @@
+     np.save(data / "mc_20s.npy", mc_matrix(stream))
+     speed, t = paired_speeds(stream, starts, w, 1)
+     write_table(data / "speeds_20s.csv", ["first_volume_0", "speed"], zip(t, speed))
+-    heatmap(out, "fcd_20s", fcd, "FCD · fenêtres de 20 s, pas de 1 TR", "Fenêtre retenue")
+-    heatmap(out, "mc_20s", np.load(data / "mc_20s.npy", mmap_mode="r")[::5, ::5],
+-            "Méta-connectivité · un lien affiché sur cinq", "Indice de lien (× 5)")
++    heatmap(out, "fcd_20s", fcd, "FCD · fenêtres de 20 s, pas de 1 TR", "Fenêtre retenue", style="fcd_m1")
++    mc_view = np.load(data / "mc_20s.npy", mmap_mode="r")[::5, ::5]
++    heatmap(out, "mc_20s", mc_view, "Méta-connectivité · un lien affiché sur cinq", "Indice de lien (× 5)",
++            style="mc_m1", limits=(0, max(np.finfo(float).eps, float(np.percentile(mc_view, 99)))))
+     settings = cfg["m1"]
+     strategy = settings["speed_definition"]
+     if strategy not in ("pooled_sliding", "median_nonoverlap"):
+@@ -184,10 +185,12 @@
+         for kind in ("emp", "phase", "shuffle"):
+             v = [r[-1] for r in rows if r[0] == "mid" and r[2] == kind]
+             if v:
+-                ax.hist(v, bins=np.linspace(0,2,41), density=True, histtype="step", label=kind)
++                color, line = SPEED_STYLES[kind]
++                ax.hist(v, bins=np.linspace(0,2,41), density=True, histtype="step", label=kind,
++                        color=color, linestyle=line, linewidth=2)
+         ax.set(xlabel="Vitesse (1 − r)", ylabel="Densité", title="Vitesses dFC · fenêtres moyennes M1")
+         ax.legend()
+-    figure(out, "vitesses", draw)
++    figure(out, "vitesses", draw, dark=True)
+ 
+ 
+ def empirical_targets(out, x, grid, tr, sc):
+@@ -203,10 +206,10 @@
+     write_json(data / "validation.json", checks)
+     write_json(data / "windows.json", dict(width_TR=volumes(60,tr), step_TR=volumes(2,tr),
+                width_s=tr*volumes(60,tr), step_s=tr*volumes(2,tr), n_chi=len(chi), n_nu=len(nu)))
+-    heatmap(out, "fcd", fcd, "FCD · profil 2026", "Fenêtre retenue")
++    heatmap(out, "fcd", fcd, "FCD · profil 2026", "Fenêtre retenue", style="fcd_article")
+     def draw(fig, ax):
+-        for vals, label in ((chi, "χ · récurrence"), (nu, "ν · vitesse")):
+-            ax.hist(vals, bins=40, density=True, histtype="step", label=label)
++        for vals, label, line in ((chi, "χ · récurrence", "-"), (nu, "ν · vitesse", "--")):
++            ax.hist(vals, bins=40, density=True, histtype="step", label=label, color="black", linestyle=line)
+         ax.set(xlabel="Valeur", ylabel="Densité", title="Distributions utilisées pour ajuster le jumeau")
+         ax.legend()
+     figure(out, "distributions", draw)
+diff --git a/script/graphes.py b/script/graphes.py
+--- a/script/graphes.py
++++ b/script/graphes.py
+@@ -49,9 +49,11 @@
+         metrics[label+"_efficiency"] = total / (len(names)*(len(names)-1))
+         metrics[label+"_clustering"] = nx.average_clustering(graph, weight="weight")
+         def draw(fig, ax):
+-            ax.scatter(strength, participation, s=14)
++            ax.scatter(strength, participation, s=14, color="#30b7d4")
+             ax.set(xlabel="Force pondérée", ylabel="Coefficient de participation", title=label+" · hubs")
+-        figure(out, label+"_hubs", draw)
++            ax.xaxis.label.set_color("#30b7d4")
++            ax.yaxis.label.set_color("#f27a1a")
++        figure(out, label+"_hubs", draw, dark=True)
+     write_json(out / "data/metrics.json", metrics)
+ 
+ 
+@@ -72,10 +74,10 @@
+     np.save(out / "data/rich_club_nulls.npy", refs)
+     write_table(out / "data/rich_club.csv", ["k","phi","phi_null_mean","phi_normalized"], zip(k,obs,avg,norm))
+     def draw(fig, ax):
+-        ax.plot(k, norm)
++        ax.plot(k, norm, color="white")
+         ax.axhline(1, color="gray", linestyle="--")
+         ax.set(xlabel="Seuil de degré k", ylabel="Coefficient normalisé", title="Rich club pondéré · FC positive")
+-    figure(out, "rich_club", draw)
++    figure(out, "rich_club", draw, dark=True)
+ 
+ 
+ def distance(out, path, names, fc):
+@@ -100,9 +102,9 @@
+         data.append([bins[i], bins[i+1], int(sel.sum()), v[sel].mean() if sel.any() else np.nan])
+     write_table(out / "data/fc_distance.csv", ["from_mm","to_mm","n_edges","mean"], data)
+     def draw(fig, ax):
+-        ax.plot((bins[:-1]+bins[1:])/2, [r[-1] for r in data], ".-")
++        ax.plot((bins[:-1]+bins[1:])/2, [r[-1] for r in data], ".-", color="white")
+         ax.set(xlabel="Distance euclidienne (mm)", ylabel="FC moyenne (z de Fisher)", title="Distance entre régions et FC positive")
+-    figure(out, "distance", draw)
++    figure(out, "distance", draw, dark=True)
+ 
+ 
+ def modules_mc(out, mc, seed, names):
+@@ -112,7 +114,7 @@
+     order = np.argsort(ids, kind="stable")
+     # Display every fifth edge; full order and assignments are exported.
+     mini = order[::5]
+-    heatmap(out, "modules_mc", mc[np.ix_(mini,mini)], "Méta-connectivité triée par module", "Lien trié (× 5)")
++    heatmap(out, "modules_mc", mc[np.ix_(mini,mini)], "Méta-connectivité triée par module", "Lien trié (× 5)", style="mc_m1")
+     write_table(out / "data/modules.csv", ["edge_0","roi_i","roi_j","module"], (
+         (i,names[EDGE[0][i]],names[EDGE[1][i]],int(ids[i])) for i in order))
+     write_json(out / "data/metrics.json", {"Q":float(modularity), "n_modules":len(np.unique(ids))})
+diff --git a/script/jumeau.py b/script/jumeau.py
+--- a/script/jumeau.py
++++ b/script/jumeau.py
+@@ -3,7 +3,7 @@
+ from numba import njit
+ from scipy.signal import butter, sosfilt, sosfiltfilt
+ 
+-from commun import aligned_sc, figure, read_json, required, source, write_json, write_table
++from commun import MODEL_COLORS, aligned_sc, figure, read_json, required, source, write_json, write_table
+ from dynamique import TARGETS, feature_set, mc_matrix, validation
+ 
+ 
+@@ -156,9 +156,10 @@
+     write_json(out / "data/solutions.json", solutions)
+     write_json(out / "data/best.json", min(solutions,key=lambda s:s["error"]))
+     def draw(fig, ax):
+-        for seed in model["optimizer_seeds"]:
++        for i, seed in enumerate(model["optimizer_seeds"]):
+             v = [r for r in trace if r[0]==seed]
+-            ax.plot([r[1] for r in v],[r[2] for r in v],label=str(seed))
++            ax.plot([r[1] for r in v],[r[2] for r in v],label=str(seed), color=MODEL_COLORS[variant],
++                    linestyle=("-", "--", ":", "-.")[i % 4], marker=("", "o", "s", "^")[(i // 4) % 4])
+         ax.set(xlabel="Génération",ylabel="Erreur euclidienne moyenne",title=variant+" · ajustements")
+         ax.legend(title="Graine")
+     figure(out, "ajustement", draw)
+@@ -184,7 +185,7 @@
+         ax.plot(keys,[empirical[k] for k in keys],"ko-",label="Empirique")
+         for modelname in fits:
+             pred = [[r[4] for r in rows if r[0]==modelname and r[2]==k] for k in keys]
+-            ax.plot(keys,np.mean(pred,axis=1),".-",label=modelname)
++            ax.plot(keys,np.mean(pred,axis=1),".-",label=modelname, color=MODEL_COLORS[modelname])
+         ax.tick_params(axis="x",rotation=45)
+         ax.set(ylabel="Quantile",title="Mesures réservées à l’évaluation")
+         ax.legend()
+diff --git a/script/pipeline.py b/script/pipeline.py
+--- a/script/pipeline.py
++++ b/script/pipeline.py
+@@ -96,8 +96,8 @@
+         def draw(fig, ax):
+             axis = np.array([supplied.min(),supplied.max()])
+             ax.axhline(0,color="0.35",linestyle="--",label="Égalité des deux FC")
+-            ax.scatter(supplied,delta,s=7,alpha=0.35,rasterized=True)
+-            ax.plot(axis,(slope-1)*axis+intercept,color="tab:orange",label="Ajustement affine")
++            ax.scatter(supplied,delta,s=7,alpha=0.35,rasterized=True,color="#4c72b0")
++            ax.plot(axis,(slope-1)*axis+intercept,color="red",label="Ajustement affine")
+             ax.set(xlabel="FC fournie (r)",ylabel="FC recalculée − FC fournie (r)",
+                    title=f"Écart par lien · {cfg['subject']} · {cfg['session']} · {cfg['version']}")
+             ax.legend()
+@@ -218,14 +218,15 @@
+             for key in ("fc_r","sc"):
+                 delta = np.load(deps["statique"]/(key+".npy")) - np.load(deps["ref_statique"]/(key+".npy"))
+                 np.save(data/(key+"_difference.npy"),delta)
+-                heatmap(out,key+"_difference",delta,key+" · V4 moins V1",signed=False)
++                bound = float(np.abs(delta).max()) or 1.0
++                heatmap(out,key+"_difference",delta,key+" · V4 moins V1",limits=(-bound, bound))
+         elif name == "simuler":
+             required(model["control_parameters"],["G","sigma"])
+             y = twin.simulate(scm,cfg,model,model["control_parameters"],n,model["fit_seeds"][0])
+             np.save(data/"simulated_bold.npy",y)
+             v, _, _, fcd, *_ = dyn.feature_set(y[grid],grid,tr)
+             write_json(data/"targets.json",dict(zip(dyn.TARGETS,v.tolist())))
+-            heatmap(out,"fcd_simulee",fcd,"FCD simulée · paramètres de contrôle","Fenêtre retenue")
++            heatmap(out,"fcd_simulee",fcd,"FCD simulée · paramètres de contrôle","Fenêtre retenue",style="fcd_article")
+         elif name in ("mfm","tmfm"):
+             twin.fit(out,name,cfg,model,scm,target,grid,n)
+         elif name == "evaluer":
+diff --git a/script/retracer_fcd.py b/script/retracer_fcd.py
+new file mode 100644
+--- /dev/null
++++ b/script/retracer_fcd.py
+@@ -0,0 +1,27 @@
++"""Tracer les deux échelles de référence à partir de la FCD à 60 s déjà calculée."""
++import argparse
++from pathlib import Path
++
++import numpy as np
++
++from commun import heatmap, read_json
++
++
++def render(folder):
++    state = read_json(folder / "manifest.json")
++    if state["status"] != "complete":
++        raise ValueError("Le lancement doit être terminé pour tracer sa FCD.")
++    config = state["configuration"]
++    fcd = np.load(folder / "data/fcd.npy", allow_pickle=False)
++    if fcd.ndim != 2 or fcd.shape[0] != fcd.shape[1] or not np.isfinite(fcd).all():
++        raise ValueError("Une matrice de FCD carrée et finie est attendue.")
++    title = f"FCD · {config['subject']} / {config['session']} / {config['version']} · 60 s"
++    for name, label in (("fcd_m1", "échelle M1"), ("fcd_article", "échelle article")):
++        heatmap(folder, name, fcd, title+" · "+label, "Fenêtre", style=name)
++        print(folder / "figures" / (name+".png"))
++
++
++if __name__ == "__main__":
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("lancement", type=Path, help="Dossier contenant manifest.json et data/fcd.npy")
++    render(parser.parse_args().lancement)

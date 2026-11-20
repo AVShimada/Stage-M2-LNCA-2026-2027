@@ -1,0 +1,112 @@
+{
+  "status": "complete",
+  "started": "2026-11-20T10:26:05.692808+00:00",
+  "configuration": {
+    "atlas": "Schaefer 100",
+    "subject": "sub-0001",
+    "session": "ses-1",
+    "version": "V4",
+    "dataset_root": "/home/aurelio/Server/Aurelio_Stage_M2/1kBrains",
+    "bold": "FC/sub-0001/ses-1/FC/Schaefer_100_7NW/sub-0001_ses-1_FC_TS_Schaefer_100P_7NW_V4.txt",
+    "ts_dimensions": "FC/sub-0001/ses-1/FC/Schaefer_100_7NW/sub-0001_ses-1_FC_TSdim_Schaefer_100P_7NW_(V4.txt",
+    "fc_reference_z": "FC/sub-0001/ses-1/FC/Schaefer_100_7NW/sub-0001_FC_connectivitymatrix_corr_fisherz_Schaefer_100P_7NW_V4.txt",
+    "sc": "SC/sub-0001/ses-1/SC/sub-0001_ses-1_gibbs_eddy_clean_1p25mm_csd_tracks_act_10M_sift2_atlas-Schaefer2018_desc-100Parcels7Networks_dseg_CM_log.txt",
+    "sc_weights": "SIFT2 CM_log",
+    "labels_bold": "",
+    "labels_sc": "",
+    "bold_orientation": "time_regions",
+    "tr_seconds": 2.0,
+    "censor_mode": "none",
+    "timing_note": "Hypothèses du pilote : TR repris des scripts V1, 296 lignes V4 supposées consécutives, sans exclusion supplémentaire.",
+    "censor_file": "",
+    "original_volume_count": null,
+    "preprocessing_reference": "",
+    "coordinates_csv": "",
+    "seed": 42,
+    "m1": {
+      "speed_definition": "pooled_sliding",
+      "max_volumes_for_speed": null,
+      "surrogates": 1
+    },
+    "graphs": {
+      "repeats": 100,
+      "resolution": 1.3,
+      "agreement_threshold": 0.5,
+      "rich_club_nulls": 100
+    }
+  },
+  "command": [
+    "-",
+    "config/pilote.json"
+  ],
+  "code_sha256": {
+    "cognition.py": "0e00f301c5d1b7d0135a61f0816ceafd6151e304cd9fbabf76333dfda8fbffbb",
+    "cohorte.py": "a3b61eab826f667d6ee223ff0ad05c7494d8eefaba72122bdf1722480bccb11e",
+    "commun.py": "3a35595ec7e63fb74b15df7c1164ad40c19a79dd37091816bc53724319e8a5ec",
+    "dynamique.py": "fec843de3546ffe86f19d06d0de16b9f78cc67777f24690ec65d1cdaced43813",
+    "graphes.py": "fe1959c805e2a2ea3e5417bec28580123e1f7517e0358b7f75923f0d1fd1f84a",
+    "jumeau.py": "e1f056f45f404f22404bbd406098a92cecaba769dad57bed0966371530596ce0",
+    "pipeline.py": "800f9ac45d2fe5eadaf05abd0f8d2ba0ea1c5213ba220156c309c17eca0fe686",
+    "retracer_fcd.py": "3beb858e85e6a9706b3ed979a22d08a463b83920485a9d4fde075c0ee6c1c519"
+  },
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.5.5",
+    "matplotlib": "3.11.2"
+  },
+  "inputs": {
+    "sc": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/1kBrains/SC/sub-0001/ses-1/SC/sub-0001_ses-1_gibbs_eddy_clean_1p25mm_csd_tracks_act_10M_sift2_atlas-Schaefer2018_desc-100Parcels7Networks_dseg_CM_log.txt",
+      "sha256": "a98656f9f011d9c39615c89dc210204c34acb7743689ed38b3104af43ed57d73"
+    },
+    "fc_v1": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/1kBrains/FC/sub-0001/ses-1/FC/Schaefer_100_7NW/sub-0001_FC_connectivitymatrix_corr_fisherz_Schaefer_100P_7NW_V1.txt",
+      "sha256": "4a8975a71c61e92b64c5f2f415c39b3c0d97044bfcae6bec2c3bac82ca1c055e"
+    },
+    "fc_v4": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/1kBrains/FC/sub-0001/ses-1/FC/Schaefer_100_7NW/sub-0001_FC_connectivitymatrix_corr_fisherz_Schaefer_100P_7NW_V4.txt",
+      "sha256": "3d7d062c2d8c054ef6f5764ea96a2fd4007b164a109fbe5e7edfe36dec75b50f"
+    }
+  },
+  "job_id": null,
+  "reference": "group_average_matrices_FC_SC.png (M1)",
+  "fc_limits": [
+    -0.40065664835678494,
+    1.2926806413667378
+  ],
+  "sc_limits": [
+    -0.08296555948553058,
+    4.607515607717042
+  ],
+  "fc_v4_adaptee_limits": [
+    -0.03775148846209049,
+    1.0131965255737296
+  ],
+  "fc_v4_adaptee_percentiles": [
+    2,
+    98
+  ],
+  "links_outside_display_limits": {
+    "sc": {
+      "n_links": 4950,
+      "n_below": 163,
+      "n_above": 3
+    },
+    "fc_v1": {
+      "n_links": 4950,
+      "n_below": 261,
+      "n_above": 0
+    },
+    "fc_v4": {
+      "n_links": 4950,
+      "n_below": 0,
+      "n_above": 17
+    },
+    "fc_v4_adaptee": {
+      "n_links": 4950,
+      "n_below": 99,
+      "n_above": 99
+    }
+  },
+  "finished": "2026-11-20T10:26:07.468745+00:00"
+}

@@ -1,0 +1,50 @@
+{
+  "sc_model": "SC/sub-0001/ses-1/SC/sub-0001_ses-1_gibbs_eddy_clean_1p25mm_csd_tracks_act_10M_sift2_atlas-Schaefer2018_desc-100Parcels7Networks_dseg_CM.txt",
+  "sc_model_labels": "",
+  "sc_model_weights": "SIFT2 CM (fichier sans suffixe _log)",
+  "sc_normalization": "",
+  "model_reference": "10.5281/zenodo.20798973",
+  "dt_seconds": 0.001,
+  "burn_seconds": 50,
+  "lowpass_hz": 0.2,
+  "observation_band_hz": null,
+  "global_signal_regression": null,
+  "neural_noise_convention": "",
+  "ou_ceiling": null,
+  "fixed": {
+    "tau_s": 0.1,
+    "gamma": 0.641,
+    "J_N": 0.2609,
+    "I0": 0.32,
+    "w": 1,
+    "a": 270,
+    "b": 108,
+    "d": 0.154
+  },
+  "bounds": {
+    "G": null,
+    "sigma": null,
+    "theta": null,
+    "sigma_ou": null
+  },
+  "control_parameters": {
+    "G": null,
+    "sigma": null
+  },
+  "population": 50,
+  "generations": 100,
+  "fit_seeds": [
+    41,
+    42
+  ],
+  "optimizer_seeds": [
+    71,
+    72
+  ],
+  "validation_seeds": [
+    101,
+    102,
+    103
+  ]
+}
+
