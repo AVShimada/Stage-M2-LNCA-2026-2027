@@ -1,11 +1,26 @@
 {
-  "classeur": "",
-  "feuille": "",
-  "colonne_sujet": "",
-  "colonne_presence_scan_1": "",
-  "colonne_presence_scan_2": "",
-  "colonne_date_scan_1": "",
-  "colonne_date_scan_2": "",
+  "table": "../1kBrains/metadonnees/Demographic_data.csv",
+  "delimiter": ";",
+  "scores_mat": "../1kBrains/metadonnees/cog_scores.mat",
+  "colonne_sujet": "id",
+  "colonne_sexe": "Sex",
+  "visites": {
+    "ses-1": {
+      "age": "Age_ses-1",
+      "education": "ISCED_ses-1",
+      "fc_declaree": "FC_ses1",
+      "sc_declaree": "SC_ses_1",
+      "date_scan": ""
+    },
+    "ses-2": {
+      "age": "Age_ses-2",
+      "education": "",
+      "fc_declaree": "FC_ses-2",
+      "sc_declaree": "SC_ses_2",
+      "date_scan": ""
+    }
+  },
+  "format_date": "",
   "colonne_intervalle": "",
   "unite_intervalle": ""
 }

@@ -7,8 +7,8 @@ from pathlib import Path
 
 import numpy as np
 
-from commun import (EDGE, OUTPUT, array_file, completed, digest, figure, heatmap, load_inputs, read_json, record,
-                    required, run_dir, source, token, write_json, write_table)
+from commun import (EDGE, STAGE_PATHS, array_file, completed, digest, figure, heatmap, load_inputs, read_json, record,
+                    required, run_dir, source, stage_dir, token, write_json, write_table)
 import dynamique as dyn
 
 STAGES = {
@@ -22,7 +22,7 @@ STAGES = {
     "rich-club": ("06_rich_club", "Rich club pondéré et normalisé par des graphes nuls."),
     "modules-mc": ("07_modules_mc", "Modules du graphe des liens à partir de la MC individuelle."),
     "comparer": ("08_v4_moins_v1", "Effet de version pour le même sujet et le même enregistrement."),
-    "simuler": ("09_simulation", "Simulation de contrôle du MFM et extraction des dix cibles."),
+    "simuler": ("09_simulation", "Simulation de contrôle du MFM, comparaison SC/FC/FCD au pilote et extraction des dix cibles."),
     "mfm": ("10_ajuster_mfm", "Ajustement du MFM autonome au sujet."),
     "tmfm": ("11_ajuster_tmfm", "Ajustement du tMFM à couplage fluctuant."),
     "evaluer": ("12_evaluer_jumeaux", "Évaluation des modèles sur de nouvelles graines et sur FC, couplage et MC."),
@@ -176,6 +176,11 @@ def execute(args):
                     raise ValueError(f"Configuration du modèle ou SC modifiée depuis {dep}")
         extra["model_configuration"] = model
         files.update(fm)
+        if name == "simuler":
+            from audits import comparer_jumeau
+            files["script_comparaison"] = Path(comparer_jumeau.__file__)
+            if cfg.get("fc_reference_z") and cfg["censor_mode"] == "none":
+                files["fc_reference_z"] = source(cfg, "fc_reference_z")
         empirical = read_json(deps["cibles"] / "targets.json")
         target = np.array([empirical[k] for k in dyn.TARGETS])
     out = run_dir(cfg,stage,run)
@@ -192,7 +197,7 @@ def execute(args):
                 ax.set(xlabel="Temps (s)",ylabel="Signal BOLD (unité fournie)",title="Trois premières régions · volumes retenus")
             figure(out,"controle_bold",draw)
         elif name == "statique":
-            dyn.static(out,x,sc,names)
+            dyn.static(out, x, sc, names, cfg["sc_weights"])
         elif name == "m1":
             dyn.m1(out,x,grid,tr,cfg)
         elif name == "cibles":
@@ -224,9 +229,10 @@ def execute(args):
             required(model["control_parameters"],["G","sigma"])
             y = twin.simulate(scm,cfg,model,model["control_parameters"],n,model["fit_seeds"][0])
             np.save(data/"simulated_bold.npy",y)
-            v, _, _, fcd, *_ = dyn.feature_set(y[grid],grid,tr)
-            write_json(data/"targets.json",dict(zip(dyn.TARGETS,v.tolist())))
-            heatmap(out,"fcd_simulee",fcd,"FCD simulée · paramètres de contrôle","Fenêtre retenue",style="fcd_article")
+            observed, simulated = comparer_jumeau.render_comparison(out, cfg, model, x, y[grid], grid, sc, scm)
+            if not np.allclose(observed, target, rtol=1e-8, atol=1e-10):
+                raise ValueError("Les cibles empiriques diffèrent de celles de l’étape 03.")
+            write_json(data/"targets.json", dict(zip(dyn.TARGETS, simulated.tolist())))
         elif name in ("mfm","tmfm"):
             twin.fit(out,name,cfg,model,scm,target,grid,n)
         elif name == "evaluer":
@@ -237,25 +243,32 @@ def execute(args):
 
 
 def gather(c, run):
-    out = OUTPUT/"exports"
+    out = stage_dir("exports") / token(run)
     out.mkdir(parents=True,exist_ok=True)
     at = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     dest = out/(run_dir(c,"",run).name+"_figures_"+at+".zip")
     sources = []
-    for name,(stage,_) in STAGES.items():
-        folder = run_dir(c,stage,run)
+    formal = {stage for stage, _ in STAGES.values()}
+    for stage, relative in STAGE_PATHS.items():
+        if stage == "exports":
+            continue
+        population = relative.startswith(("01_population/", "05_imagerie_cohorte/"))
+        folder = stage_dir(stage) / run if population else run_dir(c,stage,run)
         if folder.exists():
             state = folder / "manifest.json"
             if not state.is_file() or read_json(state).get("status") != "complete":
                 print(f"Étape en attente ou incomplète, omise de l'export : {stage}",file=sys.stderr)
                 continue
-            _, m = completed(c,stage,run)
-            sources.extend((stage,p) for p in [folder/"README.md",folder/"manifest.json",*sorted((folder/"figures").glob("*"))])
+            if stage in formal:
+                completed(c,stage,run)
+            for p in [folder/"README.md",state,*sorted((folder/"figures").glob("*"))]:
+                if p.is_file():
+                    sources.append((p, Path(relative) / p.relative_to(folder)))
     if not sources:
         raise ValueError("Aucune étape terminée pour cet identifiant")
     with zipfile.ZipFile(dest,"x",compression=zipfile.ZIP_DEFLATED) as z:
-        for stage,p in sources:
-            z.write(p,str(Path(stage)/p.relative_to(run_dir(c,stage,run))))
+        for path, member in sources:
+            z.write(path, member.as_posix())
     print(dest)
 
 

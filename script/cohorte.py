@@ -6,6 +6,7 @@ from pathlib import Path
 import numpy as np
 
 import commun as io
+from metadonnees import session_id, subject_id
 from pipeline import STAGES
 
 BASE = ("controle","statique","m1","cibles")
@@ -21,7 +22,7 @@ def roster(path):
         p = (path.parent / row["config"]).resolve()
         c = io.read_json(p)
         io.required(c,["subject","session","version"])
-        key = (c["subject"],c["session"],c["version"])
+        key = (subject_id(c["subject"]), session_id(c["session"]), c["version"])
         if key in used:
             raise ValueError(f"Enregistrement en double : {key}")
         used.add(key)
@@ -30,12 +31,28 @@ def roster(path):
 
 
 def optional_number(row,key):
-    if row[key].strip()=="":
+    text = (row.get(key) or "").strip()
+    if text.casefold() in ("", "nan"):
         return np.nan
-    v = float(row[key])
+    v = float(text)
     if not np.isfinite(v):
         raise ValueError(f"Valeur non finie dans {key}")
     return v
+
+
+def index_table(path, columns):
+    with path.open(encoding="utf-8-sig", newline="") as f:
+        reader = csv.DictReader(f)
+        missing = {"subject", "session", *columns} - set(reader.fieldnames or [])
+        if missing:
+            raise ValueError(f"Colonnes absentes de {path.name} : {sorted(missing)}")
+        indexed = {}
+        for row in reader:
+            key = (subject_id(row["subject"]), session_id(row["session"]))
+            if key in indexed:
+                raise ValueError(f"Enregistrement en double dans {path.name} : {key}")
+            indexed[key] = row
+        return indexed
 
 
 def get_metrics(c,run,files,idx):
@@ -121,6 +138,7 @@ def main():
     p.add_argument("stage",choices=["individu","assembler","groupes","modeles"])
     p.add_argument("--table",required=True,type=Path)
     p.add_argument("--scores",type=Path,help="scores.csv issu de cognition.py, joint sur sujet + session")
+    p.add_argument("--demographie",type=Path,help="demographie.csv issu de metadonnees.py, joint sur sujet + session")
     p.add_argument("--reseaux",action="store_true",help="Calculer les graphes des matrices moyennes des groupes d’âge")
     p.add_argument("--mc",action="store_true",help="Produire la MC moyenne et une FCD individuelle par tertile d’âge")
     p.add_argument("--run")
@@ -144,20 +162,20 @@ def main():
                 continue
             execute(argparse.Namespace(stage=stage,config=path,run=run))
         return
-    versions={(c["session"],c["version"]) for c,_,_,_ in records}
+    versions={(session_id(c["session"]),c["version"]) for c,_,_,_ in records}
     if len(versions)!=1:
         raise ValueError("Sélectionner une session et une version pour chaque cohorte transversale")
     files={"table":args.table.resolve()}
-    scores={}
+    scores, demographics = {}, {}
     if args.scores:
         files["cognition"]=args.scores.resolve()
-        with args.scores.open(encoding="utf-8-sig",newline="") as f:
-            for r in csv.DictReader(f):
-                k=(r["subject"],r["session"])
-                if k in scores:
-                    raise ValueError(f"Score cognitif en double : {k}")
-                scores[k]=r
-    numbers, ids, paths=[],[],[]
+        scores = index_table(args.scores, ["age", "education", "cognition"])
+    if args.demographie:
+        files["demographie"]=args.demographie.resolve()
+        demographics = index_table(args.demographie, ["age", "education", "sex"])
+    numbers, ids, sexes, paths = [], [], [], []
+    matches = {"demographie_apparies": 0, "cognition_apparies": 0,
+               "age_discordant_entre_sources": 0, "education_discordante_entre_sources": 0}
     convention=None
     for i,(c,run,row,path) in enumerate(records):
         common=(c["sc_weights"],c["m1"]["speed_definition"],c["m1"]["max_volumes_for_speed"],c["tr_seconds"])
@@ -165,27 +183,46 @@ def main():
             raise ValueError("Harmoniser TR, échelle SC et définition de Vtyp pour la cohorte")
         convention=common
         metrics,dirs=get_metrics(c,run,files,i)
+        key = (subject_id(c["subject"]), session_id(c["session"]))
+        demography = demographics.get(key, {})
+        score = scores.get(key, {})
+        matches["demographie_apparies"] += int(bool(demography))
+        matches["cognition_apparies"] += int(bool(score))
         demo=[]
         for k in ("age","education","cognition"):
             v=optional_number(row,k)
-            score=scores.get((c["subject"],c["session"]))
-            if score and score[k] not in ("","nan"):
-                w=optional_number(score,k)
+            w = optional_number(score,k)
+            d = optional_number(demography,k)
+            if np.isfinite(d):
+                if np.isfinite(w) and not np.isclose(d,w):
+                    counter = "age_discordant_entre_sources" if k == "age" else "education_discordante_entre_sources"
+                    matches[counter] += 1
+                w = d
+            if np.isfinite(w):
                 if np.isfinite(v) and not np.isclose(v,w):
-                    raise ValueError(f"Valeur {k} discordante pour {c['subject']}")
+                    raise ValueError(f"Valeur {k} du manifeste discordante pour {key[0]}")
                 v=w
             demo.append(v)
         numbers.append(demo+metrics)
-        ids.append(c["subject"])
+        ids.append(key[0])
+        sexes.append(demography.get("sex",""))
         paths.append(dirs)
     a=np.array(numbers)
     from dynamique import TARGETS
     cols=["age","education","cognition","SC_mean","FC_z_mean","Vtyp_mid",*TARGETS]
-    out=io.OUTPUT/("cohorte_"+args.stage)/io.token(args.run)
-    opts=dict(session=records[0][0]["session"],version=records[0][0]["version"],seed=42,
+    out=io.stage_dir("cohorte_"+args.stage)/io.token(args.run)
+    session, version = next(iter(versions))
+    opts=dict(session=session,version=version,seed=42,
               bootstrap=args.bootstrap,permutations=args.permutations,reseaux=args.reseaux,mc=args.mc)
     with io.record(out,"Analyse de cohorte · "+args.stage,opts,files) as data:
-        io.write_table(data/"sujets.csv",["subject",*cols],([i,*v] for i,v in zip(ids,a)))
+        headers = ["subject", *cols]
+        rows = ([i,*v] for i,v in zip(ids,a))
+        if args.demographie:
+            headers.append("sex")
+            rows = ([*row, sex] for row, sex in zip(rows, sexes))
+        io.write_table(data/"sujets.csv", headers, rows)
+        if args.demographie or args.scores:
+            io.write_json(data/"jointure_metadonnees.json", matches)
         if args.stage=="modeles":
             keep=np.all(np.isfinite(a[:,:6]),axis=1)
             if keep.sum()<10 or min(args.bootstrap,args.permutations)<1:

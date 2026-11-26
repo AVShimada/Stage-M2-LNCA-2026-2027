@@ -1,0 +1,25 @@
+{
+  "bold_shape": [
+    296,
+    100
+  ],
+  "fcd_shape": [
+    267,
+    267
+  ],
+  "fcd_cibles_shape": [
+    267,
+    267
+  ],
+  "fenetre_cibles_volumes": 30,
+  "fichier_fcd_cibles_simulee": "fcd_simulee_cibles_60s.npy",
+  "alias_fichiers": {
+    "fcd_simulee.npy": "fcd_simulee_cibles_60s.npy"
+  },
+  "fcd_figure_shape": null,
+  "fenetre_fcd_figure_volumes": null,
+  "fichiers_fcd_figures": [],
+  "n_vitesses": 42,
+  "secondes_calcul": 7.625841656001285,
+  "distance_euclidienne_cibles": 1.1184554887485232
+}

@@ -1,0 +1,35 @@
+{
+  "atlas": "Schaefer 100",
+  "subject": "sub-0001",
+  "session": "ses-1",
+  "version": "V4",
+  "dataset_root": "/home/aurelio/Server/Aurelio_Stage_M2/1kBrains",
+  "bold": "FC/sub-0001/ses-1/FC/Schaefer_100_7NW/sub-0001_ses-1_FC_TS_Schaefer_100P_7NW_V4.txt",
+  "ts_dimensions": "FC/sub-0001/ses-1/FC/Schaefer_100_7NW/sub-0001_ses-1_FC_TSdim_Schaefer_100P_7NW_(V4.txt",
+  "fc_reference_z": "FC/sub-0001/ses-1/FC/Schaefer_100_7NW/sub-0001_FC_connectivitymatrix_corr_fisherz_Schaefer_100P_7NW_V4.txt",
+  "sc": "SC/sub-0001/ses-1/SC/sub-0001_ses-1_gibbs_eddy_clean_1p25mm_csd_tracks_act_10M_sift2_atlas-Schaefer2018_desc-100Parcels7Networks_dseg_CM_log.txt",
+  "sc_weights": "SIFT2 CM_log",
+  "labels_bold": "/home/aurelio/Server/Aurelio_Stage_M2/atlas/labels_M1.txt",
+  "labels_sc": "/home/aurelio/Server/Aurelio_Stage_M2/atlas/labels_M1.txt",
+  "bold_orientation": "time_regions",
+  "tr_seconds": 2.0,
+  "censor_mode": "none",
+  "timing_note": "Hypothèses du pilote : TR repris des scripts V1, 296 lignes V4 supposées consécutives, sans exclusion supplémentaire.",
+  "censor_file": "",
+  "original_volume_count": null,
+  "preprocessing_reference": "",
+  "coordinates_csv": "",
+  "seed": 42,
+  "m1": {
+    "speed_definition": "pooled_sliding",
+    "max_volumes_for_speed": null,
+    "surrogates": 1
+  },
+  "graphs": {
+    "repeats": 100,
+    "resolution": 1.3,
+    "agreement_threshold": 0.5,
+    "rich_club_nulls": 100
+  },
+  "roi_order_note": "Pilote technique : ordre commun repris du M1, à confirmer pour le BOLD et la SC."
+}

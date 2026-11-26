@@ -3,7 +3,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 export PYTHONPATH=script OPENBLAS_NUM_THREADS=1
 
-"${PYTHON_BIN:-$HOME/.venvs/lnca-1000brains/bin/python}" - "${1:-config/pilote.json}" <<'PY'
+"${PYTHON_BIN:-$HOME/.venvs/lnca-1000brains/bin/python}" - "${1:-config/pilote.json}" "${2:-}" <<'PY'
 from datetime import datetime, timezone
 import sys
 
@@ -62,7 +62,7 @@ for name, (matrix_name, _, (low, high)) in plots.items():
         "n_above": int(np.count_nonzero(links > high)),
     }
 
-run = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+run = sys.argv[2] or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
 out = run_dir(config, "01_apercu_sc_fc", run)
 scan = f"{config['subject']} / {config['session']}"
 reference = {"reference": "group_average_matrices_FC_SC.png (M1)",

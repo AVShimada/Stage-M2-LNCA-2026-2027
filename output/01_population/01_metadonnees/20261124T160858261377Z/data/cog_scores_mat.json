@@ -1,0 +1,12 @@
+{
+  "methode": "loadmat",
+  "variables": [
+    {
+      "nom": "outputTable",
+      "dimensions": [
+        1
+      ],
+      "classe": "MatlabOpaque"
+    }
+  ]
+}

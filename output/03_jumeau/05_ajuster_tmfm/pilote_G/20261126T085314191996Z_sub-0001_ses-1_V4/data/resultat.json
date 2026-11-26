@@ -1,0 +1,142 @@
+{
+  "reference": {
+    "G": 0.75,
+    "w": 1,
+    "sigma": 0.03
+  },
+  "candidat": {
+    "tau_s": 10.0,
+    "amplitude": 0.05,
+    "theta": 0.1,
+    "sigma_ou": 0.022360679774997897,
+    "erreur": 1.755747302546756
+  },
+  "validation": {
+    "MFM fixe": {
+      "erreur_10_cibles": 0.20893648395943365,
+      "erreur_nu_p5": 0.09787843552939166,
+      "erreur_nu_p95": 0.05731858436288719,
+      "rmse_fc": 0.3798297030220385,
+      "rmse_fc_inter": 0.4089205665053674,
+      "fc_moyenne_inter": 0.023322490685229395,
+      "r_liens_fc": 0.25968425199722006,
+      "chi_p5": 0.32375864456985975,
+      "chi_p25": 0.3603879078402999,
+      "chi_p50": 0.389551174413039,
+      "chi_p75": 0.43491787345550587,
+      "chi_p95": 0.8469150947790389,
+      "nu_p5": 0.549969881624232,
+      "nu_p25": 0.589538819164573,
+      "nu_p50": 0.6197560365769013,
+      "nu_p75": 0.641864295420773,
+      "nu_p95": 0.6767474778541447
+    },
+    "tMFM_G": {
+      "erreur_10_cibles": 1.7951651894480967,
+      "erreur_nu_p5": 0.4380919281301739,
+      "erreur_nu_p95": 0.6673099036674232,
+      "rmse_fc": 0.6394744131278807,
+      "rmse_fc_inter": 0.6520201444497652,
+      "fc_moyenne_inter": 0.9999956879623951,
+      "r_liens_fc": 0.01623711955925332,
+      "chi_p5": 0.9320592223140667,
+      "chi_p25": 0.964996321604537,
+      "chi_p50": 0.9766115847735188,
+      "chi_p75": 0.9831221344361947,
+      "chi_p95": 0.9937809337674569,
+      "nu_p5": 0.01399951796466641,
+      "nu_p25": 0.02015081871623492,
+      "nu_p50": 0.028184839723071696,
+      "nu_p75": 0.04024560230939768,
+      "nu_p95": 0.06675615854960873
+    },
+    "MFM au G moyen": {
+      "erreur_10_cibles": 0.2098473327001103,
+      "erreur_nu_p5": 0.09115568765289195,
+      "erreur_nu_p95": 0.06258156368460407,
+      "rmse_fc": 0.3790683396439815,
+      "rmse_fc_inter": 0.40850231250132,
+      "fc_moyenne_inter": 0.0237911682711985,
+      "r_liens_fc": 0.25995580877897584,
+      "chi_p5": 0.3289693958633542,
+      "chi_p25": 0.36606255564487106,
+      "chi_p50": 0.3954554543176042,
+      "chi_p75": 0.4411250847617249,
+      "chi_p95": 0.8484220175131286,
+      "nu_p5": 0.5432471337477323,
+      "nu_p25": 0.5838168714583801,
+      "nu_p50": 0.6141292930805871,
+      "nu_p75": 0.636001086594059,
+      "nu_p95": 0.6714844985324279
+    }
+  },
+  "erreur_moyenne_plus_faible_que_les_deux_controles": {
+    "erreur_10_cibles": false,
+    "erreur_nu_p5": false,
+    "erreur_nu_p95": false,
+    "rmse_fc": false,
+    "rmse_fc_inter": false
+  },
+  "comparaison_pairee_tmfm_moins_controle": {
+    "MFM fixe": {
+      "erreur_10_cibles": {
+        "delta_moyen": 1.586228705488663,
+        "n_graines_ameliorees": 0
+      },
+      "erreur_nu_p5": {
+        "delta_moyen": 0.34021349260078226,
+        "n_graines_ameliorees": 0
+      },
+      "erreur_nu_p95": {
+        "delta_moyen": 0.609991319304536,
+        "n_graines_ameliorees": 0
+      },
+      "rmse_fc": {
+        "delta_moyen": 0.25964471010584217,
+        "n_graines_ameliorees": 0
+      },
+      "rmse_fc_inter": {
+        "delta_moyen": 0.2430995779443978,
+        "n_graines_ameliorees": 0
+      }
+    },
+    "MFM au G moyen": {
+      "erreur_10_cibles": {
+        "delta_moyen": 1.5853178567479864,
+        "n_graines_ameliorees": 0
+      },
+      "erreur_nu_p5": {
+        "delta_moyen": 0.34693624047728194,
+        "n_graines_ameliorees": 0
+      },
+      "erreur_nu_p95": {
+        "delta_moyen": 0.604728339982819,
+        "n_graines_ameliorees": 0
+      },
+      "rmse_fc": {
+        "delta_moyen": 0.26040607348389916,
+        "n_graines_ameliorees": 0
+      },
+      "rmse_fc_inter": {
+        "delta_moyen": 0.24351783194844517,
+        "n_graines_ameliorees": 0
+      }
+    }
+  },
+  "n_graines": 5,
+  "cibles_empiriques": {
+    "chi_p5": 0.18865740130747238,
+    "chi_p25": 0.3038079595053641,
+    "chi_p50": 0.3852049357160987,
+    "chi_p75": 0.5004522910018439,
+    "chi_p95": 0.8650249565355081,
+    "nu_p5": 0.4520914460948403,
+    "nu_p25": 0.5441146758517621,
+    "nu_p50": 0.5938495186614519,
+    "nu_p75": 0.673836188882228,
+    "nu_p95": 0.7340660622170319
+  },
+  "fc_moyenne_inter_empirique": 0.3786741296553205,
+  "erreur_ajustement_MFM": 0.21762144714665999,
+  "graine_figures": 401
+}

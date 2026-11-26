@@ -1,0 +1,71 @@
+{
+  "status": "complete",
+  "started": "2026-11-24T16:08:58.888249+00:00",
+  "configuration": {
+    "table": "../1kBrains/metadonnees/Demographic_data.csv",
+    "delimiter": ";",
+    "scores_mat": "../1kBrains/metadonnees/cog_scores.mat",
+    "colonne_sujet": "id",
+    "colonne_sexe": "Sex",
+    "visites": {
+      "ses-1": {
+        "age": "Age_ses-1",
+        "education": "ISCED_ses-1",
+        "fc_declaree": "FC_ses1",
+        "sc_declaree": "SC_ses_1",
+        "date_scan": ""
+      },
+      "ses-2": {
+        "age": "Age_ses-2",
+        "education": "",
+        "fc_declaree": "FC_ses-2",
+        "sc_declaree": "SC_ses_2",
+        "date_scan": ""
+      }
+    },
+    "format_date": "",
+    "colonne_intervalle": "",
+    "unite_intervalle": ""
+  },
+  "command": [
+    "script/metadonnees.py",
+    "--run",
+    "20261124T160858261377Z"
+  ],
+  "code_sha256": {
+    "cognition.py": "3989c8e3d2e81afed4122a91429849704eb75c55156b825f351220ce484ce33d",
+    "cohorte.py": "b63359d77144b694f3bca464b2fa0c38be29b6443810662f9cca2ec8b62b9b48",
+    "commun.py": "2913d7465e2914afcdc0a137e1051f3a15dd6973dde64234c7c6d2a4fd1e4f11",
+    "decrire_second_scan.py": "b3202269b01b23dca19973cce2f05df4f514d020bb0718c4bbd54b229146c1df",
+    "dynamique.py": "04425ddc1a56cede742cd4a1ab1d02dec1a8001e14881b06c400a430eeda57b2",
+    "extraire_second_scan.py": "844b8b373c9929a30112f0502632510b54a0422ed20737ef00b25ef4206c9c18",
+    "graphes.py": "fe1959c805e2a2ea3e5417bec28580123e1f7517e0358b7f75923f0d1fd1f84a",
+    "jumeau.py": "e1f056f45f404f22404bbd406098a92cecaba769dad57bed0966371530596ce0",
+    "metadonnees.py": "f1f59fa6977ff8e7e91682339624f0dad7fcc76aa3c5d9f315683ea7867c0014",
+    "pipeline.py": "41751fff38fdaf950fb48fce0d2f131a25a8fbe46298ade01028aa40ec15fd92",
+    "relancer_workflow.py": "cfd15a1778c2b21a9b110a6449a09276bfe747134a886bf0fdb6baf48b0e385a",
+    "rendu_pilote.py": "730a8c0f083d650cbfbde1a334131ef35a91cad2432c4a37a8af3f1d665d6204",
+    "retracer_fcd.py": "3beb858e85e6a9706b3ed979a22d08a463b83920485a9d4fde075c0ee6c1c519"
+  },
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.5.5",
+    "scipy": "1.18.1",
+    "numba": "0.68.1",
+    "bctpy": "0.6.1",
+    "networkx": "3.7",
+    "matplotlib": "3.11.2"
+  },
+  "inputs": {
+    "demographie": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/1kBrains/metadonnees/Demographic_data.csv",
+      "sha256": "7f1379a46bb52bf3ea036c707388013ce7658141b8398ce072735043ed2da545"
+    },
+    "scores_mat": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/1kBrains/metadonnees/cog_scores.mat",
+      "sha256": "ea19504e1d711e6a71c2dc6d768bc80ccf758caac12d322b5163895bd6cf1be5"
+    }
+  },
+  "job_id": null,
+  "finished": "2026-11-24T16:08:58.953224+00:00"
+}

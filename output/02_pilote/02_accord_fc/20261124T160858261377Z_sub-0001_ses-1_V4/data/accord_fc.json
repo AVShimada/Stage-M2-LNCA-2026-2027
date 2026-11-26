@@ -1,0 +1,10 @@
+{
+  "n_links": 4950,
+  "r_profiles": 0.9999999999999274,
+  "n_recalculated_higher": 4809,
+  "median_delta": 0.007887281032402299,
+  "max_abs_delta": 0.018770383972333327,
+  "slope": 1.0207511142434278,
+  "intercept": -5.534286852053383e-10,
+  "max_abs_residual": 3.8408749647445006e-07
+}

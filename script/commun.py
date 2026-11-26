@@ -19,6 +19,42 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "output"
 EDGE = np.triu_indices(100, 1)
 
+# Identifiants des analyses et chemins partagés par les producteurs et les lecteurs.
+STAGE_PATHS = {
+    "cohorte_metadonnees": "01_population/01_metadonnees",
+    "cohorte_cognition": "01_population/02_scores_cognitifs",
+    "audit_manquants": "01_population/03_audit_manquants",
+    "cohorte_second_scan": "01_population/04_second_scan",
+    "cohorte_tests_complets": "01_population/05_tests_complets",
+    "cohorte_second_scan_descriptif": "01_population/06_descriptifs",
+    "00_controle": "02_pilote/01_controle",
+    "00_accord_fc": "02_pilote/02_accord_fc",
+    "01_apercu_sc_fc": "02_pilote/03_apercu_sc_fc",
+    "01_sc_fc": "02_pilote/04_sc_fc",
+    "02_dynamique_m1": "02_pilote/05_dynamique_m1",
+    "02_comparaison_fcd_v1_v4": "02_pilote/06_fcd_v1_v4",
+    "03_cibles_2026": "02_pilote/07_cibles_2026",
+    "04_graphes": "02_pilote/08_graphes",
+    "05_distance": "02_pilote/09_distance",
+    "06_rich_club": "02_pilote/10_rich_club",
+    "07_modules_mc": "02_pilote/11_modules_mc",
+    "08_v4_moins_v1": "02_pilote/12_differences_v4_v1",
+    "09_jumeau_controle_technique": "03_jumeau/01_simulation",
+    "10_jumeau_comparaison": "03_jumeau/02_comparaison",
+    "09_simulation": "03_jumeau/03_controle_avant_ajustement",
+    "10_ajuster_mfm": "03_jumeau/04_ajuster_mfm",
+    "11_ajuster_tmfm": "03_jumeau/05_ajuster_tmfm",
+    "12_evaluer_jumeaux": "03_jumeau/06_evaluation",
+    "exports": "04_exports",
+    "cohorte_assembler": "05_imagerie_cohorte/01_assemblage",
+    "cohorte_groupes": "05_imagerie_cohorte/02_groupes",
+    "cohorte_modeles": "05_imagerie_cohorte/03_modeles",
+}
+
+
+def stage_dir(stage):
+    return OUTPUT / STAGE_PATHS[stage]
+
 
 def read_json(path):
     return json.loads(Path(path).read_text(encoding="utf-8-sig"))
@@ -144,7 +180,10 @@ def load_inputs(c):
 
 def run_dir(c, stage, run):
     tag = "_".join(token(x) for x in (run, c["subject"], c["session"], c["version"]))
-    return OUTPUT / stage / tag
+    if not stage:
+        return OUTPUT / tag
+    base = stage_dir(stage) if stage in STAGE_PATHS else OUTPUT / token(stage)
+    return base / tag
 
 
 def code_hashes():

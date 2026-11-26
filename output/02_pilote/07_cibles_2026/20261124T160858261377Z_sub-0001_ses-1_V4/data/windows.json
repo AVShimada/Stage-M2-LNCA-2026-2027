@@ -1,0 +1,12 @@
+{
+  "width_TR": 30,
+  "step_TR": 1,
+  "width_s": 60.0,
+  "step_s": 2.0,
+  "n_chi": 35511,
+  "n_nu": 42,
+  "fichier_fcd_cibles": "fcd.npy",
+  "fichier_fcd_figure": "fcd_10_volumes.npy",
+  "figure_width_TR": 10,
+  "figure_step_TR": 1
+}

@@ -5,6 +5,26 @@ from pathlib import Path
 
 import numpy as np
 import commun as io
+from metadonnees import session_id, subject_id
+
+
+def read_rows(path, config):
+    if path.suffix.lower() != ".xlsx":
+        io.required(config, ["delimiter"])
+        with path.open(encoding="utf-8-sig", newline="") as f:
+            reader = csv.DictReader(f, delimiter=config["delimiter"])
+            return reader.fieldnames or [], list(reader)
+
+    from openpyxl import load_workbook
+
+    io.required(config, ["sheet", "visit_column"])
+    workbook = load_workbook(path, read_only=True, data_only=True)
+    try:
+        values = iter(workbook[config["sheet"]].values)
+        headers = [str(value).strip() if value is not None else "" for value in next(values)]
+        return headers, [dict(zip(headers, row)) for row in values if any(value is not None for value in row)]
+    finally:
+        workbook.close()
 
 
 def main():
@@ -13,23 +33,38 @@ def main():
     p.add_argument("--run",required=True)
     args=p.parse_args()
     c=io.read_json(args.config)
-    io.required(c,["table","delimiter","id_column","age_column","education_column","min_tests","session"])
+    io.required(c,["table","id_column","age_column","education_column","min_tests","session"])
     src=(args.config.parent / c["table"]).resolve()
-    with src.open(encoding="utf-8-sig",newline="") as f:
-        rows=list(csv.DictReader(f,delimiter=c["delimiter"]))
-    ids=[r[c["id_column"]].strip() for r in rows]
     keys=list(c["tests"])
-    if not rows or "" in ids or len(ids)!=len(set(ids)):
-        raise ValueError("Fournir une ligne par sujet pour la session indiquée")
+    headers, rows = read_rows(src, c)
+    visit = c.get("visit_column")
+    columns = [c[k] for k in ("id_column", "age_column", "education_column")] + keys
+    if visit:
+        columns.append(visit)
+    missing_columns = [name for name in columns if name not in headers]
+    if missing_columns:
+        raise ValueError(f"Colonnes cognitives absentes : {missing_columns}")
+    if any(headers.count(name) != 1 for name in columns):
+        raise ValueError("Colonnes cognitives en double.")
+    session = session_id(c["session"])
+    if visit:
+        rows = [row for row in rows if session_id(row[visit]) == session]
+    ids = np.array([subject_id(row[c["id_column"]]) for row in rows])
+    if not rows or len(ids) != len(set(ids)):
+        raise ValueError("Fournir une ligne par sujet pour la session indiquée.")
     if not 1 <= c["min_tests"] <= len(keys) or not set(c["tests"].values()) <= {-1,1}:
         raise ValueError("Vérifier le minimum de tests et leur orientation")
-    missing={"",*map(str,c["missing_codes"])}
+    missing = {"", *(str(v).strip().casefold() for v in c["missing_codes"])}
     def value(r,k):
-        return float(r[k]) if r[k].strip() not in missing else np.nan
+        text = str(r[k]).strip() if r[k] is not None else ""
+        return float(text.replace(",", ".")) if text.casefold() not in missing else np.nan
     age=np.array([value(r,c["age_column"]) for r in rows])
     edu=np.array([value(r,c["education_column"]) for r in rows])
     x=np.array([[value(r,k) for k in keys] for r in rows])
-    if not np.isfinite(age).all() or np.isinf(edu).any() or np.isinf(x).any():
+    missing_age = np.isnan(age)
+    if c.get("drop_missing_age"):
+        ids, age, edu, x = (a[~missing_age] for a in (ids, age, edu, x))
+    if not len(ids) or not np.isfinite(age).all() or np.isinf(edu).any() or np.isinf(x).any():
         raise ValueError("Vérifier âge, éducation et tests non finis")
     if "AKT_TRW_SelectiveAttention" in keys:
         x[age<c["akt_min_age"],keys.index("AKT_TRW_SelectiveAttention")]=np.nan
@@ -44,10 +79,12 @@ def main():
     zz=(imputed-imputed.mean(axis=0))/imputed.std(axis=0)
     u,s,vt=np.linalg.svd(zz,full_matrices=False)
     variance=s**2/np.sum(s**2)
-    folder=io.OUTPUT/"cohorte_cognition"/io.token(args.run)
-    with io.record(folder,"Score cognitif global et ACP descriptive",c,{"table":src}) as data:
+    folder=io.stage_dir("cohorte_cognition")/io.token(args.run)
+    provenance = {"n_lignes_visite": len(rows), "n_age_manquant_exclus": len(rows) - len(ids),
+                  "n_scores": int(np.isfinite(score).sum())}
+    with io.record(folder,"Score cognitif global et ACP descriptive",c,{"table":src}, extra=provenance) as data:
         io.write_table(data/"scores.csv",["subject","session","age","education","cognition","tests_used"],
-                       zip(ids,[c["session"]]*len(ids),age,edu,score,counts))
+                       zip(ids,[session]*len(ids),age,edu,score,counts))
         io.write_table(data/"standardisation.csv",["test","sign","mean","std","n"],zip(keys,c["tests"].values(),mean,std,np.isfinite(x).sum(axis=0)))
         pcs=[f"PC{i+1}" for i in range(len(s))]
         io.write_table(data/"acp_scores.csv",["subject",*pcs],([i,*v] for i,v in zip(ids,u*s)))
@@ -57,6 +94,7 @@ def main():
             ax.plot(np.arange(1,len(s)+1),np.cumsum(variance),"o-",color="#4c72b0")
             ax.set(xlabel="Nombre de composantes",ylabel="Fraction de variance cumulée",title="ACP cognitive descriptive")
         io.figure(folder,"acp",draw)
+    print(f"{len(ids)} sujets retenus en {session}, {provenance['n_scores']} scores calculés")
     print(folder)
 
 

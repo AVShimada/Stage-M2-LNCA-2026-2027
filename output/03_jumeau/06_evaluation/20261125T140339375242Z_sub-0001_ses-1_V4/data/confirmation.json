@@ -1,0 +1,25 @@
+{
+  "erreur_moyenne": {
+    "controle": 1.120170482106284,
+    "meilleur_sur_grille": 0.20579052907996545
+  },
+  "graines": [
+    201,
+    202,
+    203,
+    204,
+    205
+  ],
+  "n_graines_ameliorees": 5,
+  "parametres": {
+    "controle": {
+      "G": 0.05,
+      "sigma": 0.03
+    },
+    "meilleur_sur_grille": {
+      "G": 0.75,
+      "sigma": 0.03
+    }
+  },
+  "graine_figures": 201
+}

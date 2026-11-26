@@ -3,7 +3,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 export OPENBLAS_NUM_THREADS=1
 
-"${PYTHON_BIN:-$HOME/.venvs/lnca-1000brains/bin/python}" - "${1:-config/pilote.json}" <<'PY'
+"${PYTHON_BIN:-$HOME/.venvs/lnca-1000brains/bin/python}" - "${1:-config/pilote.json}" "${2:-}" <<'PY'
 from datetime import datetime, timezone
 from pathlib import Path
 import sys
@@ -42,7 +42,7 @@ if not all(np.isfinite(signal).all() for signal in signals.values()):
     raise ValueError("Valeurs non finies dans les séries BOLD.")
 grid = np.arange(len(signal))
 limits = (0, 0.5)
-run = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+run = sys.argv[2] or datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
 out = run_dir(cfg, "02_comparaison_fcd_v1_v4", run)
 settings = {
     "width_TR": width,

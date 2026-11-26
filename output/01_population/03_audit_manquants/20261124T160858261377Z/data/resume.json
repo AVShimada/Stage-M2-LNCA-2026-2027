@@ -1,0 +1,71 @@
+{
+  "session_cognitive": "ses-1",
+  "n_lignes_code_visite_manquant": 0,
+  "n_sujets_second_scan_declares": 432,
+  "n_sujets_second_scan_sans_ligne_cognitive": 0,
+  "ensemble": {
+    "n_lignes_cognitives": 1314,
+    "n_sujets_cognitifs": 1314,
+    "n_ages_indisponibles": 5,
+    "n_nulls_par_champ": {
+      "ID": 0,
+      "Age": 5,
+      "Sex": 0,
+      "ISCED_97": 5
+    },
+    "n_cellules_tests_manquantes": 704,
+    "n_cellules_tests_non_numeriques_ou_non_finies": 0,
+    "n_cellules_tests_a_zero": 27,
+    "n_lignes_avec_au_moins_un_test_manquant": 439,
+    "n_lignes_tous_tests_manquants": 4,
+    "n_lignes_age_connu_avec_test_attendu_indisponible": 108,
+    "n_lignes_age_connu_sous_min_tests": 0,
+    "distribution_n_tests_utilisables_age_connu": {
+      "1": 1,
+      "5": 1,
+      "7": 1,
+      "8": 3,
+      "10": 1,
+      "11": 1,
+      "12": 3,
+      "14": 5,
+      "15": 6,
+      "16": 11,
+      "17": 29,
+      "18": 375,
+      "19": 872
+    },
+    "codes_manquants_tests": {
+      "null": 704
+    }
+  },
+  "second_scan": {
+    "n_lignes_cognitives": 432,
+    "n_sujets_cognitifs": 432,
+    "n_ages_indisponibles": 0,
+    "n_nulls_par_champ": {
+      "ID": 0,
+      "Age": 0,
+      "Sex": 0,
+      "ISCED_97": 0
+    },
+    "n_cellules_tests_manquantes": 138,
+    "n_cellules_tests_non_numeriques_ou_non_finies": 0,
+    "n_cellules_tests_a_zero": 7,
+    "n_lignes_avec_au_moins_un_test_manquant": 112,
+    "n_lignes_tous_tests_manquants": 0,
+    "n_lignes_age_connu_avec_test_attendu_indisponible": 23,
+    "n_lignes_age_connu_sous_min_tests": 0,
+    "distribution_n_tests_utilisables_age_connu": {
+      "8": 1,
+      "15": 2,
+      "16": 1,
+      "17": 8,
+      "18": 100,
+      "19": 320
+    },
+    "codes_manquants_tests": {
+      "null": 138
+    }
+  }
+}

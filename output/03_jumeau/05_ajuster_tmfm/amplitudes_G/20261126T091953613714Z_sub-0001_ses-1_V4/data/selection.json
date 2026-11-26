@@ -1,0 +1,4 @@
+{
+  "amplitude_retenue": 3e-05,
+  "regle": "Erreur moyenne minimale sur les dix cibles en ajustement. Égalité départagée par la plus petite amplitude."
+}

@@ -1,0 +1,11 @@
+{
+  "n_original": 296,
+  "n_kept": 296,
+  "continuous_blocks": [
+    296
+  ],
+  "sc_min": -0.634297,
+  "sc_max": 4.742267,
+  "sc_weights": "SIFT2 CM_log",
+  "tr_seconds": 2.0
+}

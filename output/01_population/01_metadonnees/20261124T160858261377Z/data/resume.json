@@ -1,0 +1,17 @@
+{
+  "n_lignes_source": 1197,
+  "n_sujets": 1189,
+  "n_conflits": 19,
+  "n_intervalles": 0,
+  "colonnes_source": [
+    "id",
+    "FC_ses1",
+    "FC_ses-2",
+    "SC_ses_1",
+    "SC_ses_2",
+    "Sex",
+    "Age_ses-1",
+    "Age_ses-2",
+    "ISCED_ses-1"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "status": "complete",
+  "started": "2026-11-20T15:01:04.476013+00:00",
+  "configuration": {
+    "seuil_age_m1": 55,
+    "seuils_isced_m1": [
+      5,
+      8
+    ],
+    "scores_run": "20261120T150103Z",
+    "delai": "Différence des âges arrondis entre les scans, en années"
+  },
+  "command": [
+    "script/decrire_second_scan.py",
+    "--scores-run",
+    "20261120T150103Z",
+    "--run",
+    "20261120T150103Z"
+  ],
+  "code_sha256": {
+    "cognition.py": "b99784f10b01d25bc4299773f3e51b6e0d0fe963014d6d328d4d1e40b801c4f6",
+    "cohorte.py": "246f1fec7dafc6bc193c5cffe08edbe3206153e841fbf0315537eb3199b14252",
+    "commun.py": "cab3af19a885a7f231cbe8707bacca63256b5539ed1340e538fecd44f6a8d69f",
+    "decrire_second_scan.py": "8ad187b222b44887541f69ffc96ff3836283f897810781249f47c06d583d2c4a",
+    "dynamique.py": "fec843de3546ffe86f19d06d0de16b9f78cc67777f24690ec65d1cdaced43813",
+    "extraire_second_scan.py": "cd137a73a22dae019e379cacbc1b04b17f6e529cd68f7286fd21cf621e115cc7",
+    "graphes.py": "fe1959c805e2a2ea3e5417bec28580123e1f7517e0358b7f75923f0d1fd1f84a",
+    "jumeau.py": "e1f056f45f404f22404bbd406098a92cecaba769dad57bed0966371530596ce0",
+    "metadonnees.py": "c67c761ec9f44d1b47e4d4a8792f58babf1c55da79d56e2d2db67167eec4ede5",
+    "pipeline.py": "800f9ac45d2fe5eadaf05abd0f8d2ba0ea1c5213ba220156c309c17eca0fe686",
+    "retracer_fcd.py": "3beb858e85e6a9706b3ed979a22d08a463b83920485a9d4fde075c0ee6c1c519"
+  },
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.5.5",
+    "scipy": "1.18.1",
+    "matplotlib": "3.11.2"
+  },
+  "inputs": {
+    "demographie": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/output/cohorte_second_scan/20261120T145236947307Z/data/second_scan_demographie.xlsx",
+      "sha256": "7f9dde2cfff81dc9d6e9f98345e43db0ff91e0b9ce6f8bbb7720c9703b0ad337"
+    },
+    "scores_visite_1": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/output/cohorte_cognition/20261120T150103Z/data/scores.csv",
+      "sha256": "b3757607c07848ceb1afc30367dcdf4704c11fefc77f81a56a130c80bd46a68d"
+    },
+    "manifest_cognition": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/output/cohorte_cognition/20261120T150103Z/manifest.json",
+      "sha256": "815d5e8b6b04c801ad3c0f0b915eee87e6e588a5eb836e9aaf347664526d4cb1"
+    }
+  },
+  "job_id": null,
+  "n_sujets": 432,
+  "n_lignes_demographie": 433,
+  "n_champs_en_conflit": 3,
+  "n_ecarts_age_negatifs_exclus": 0,
+  "n_scores_cognitifs": 432,
+  "finished": "2026-11-20T15:01:06.715110+00:00"
+}

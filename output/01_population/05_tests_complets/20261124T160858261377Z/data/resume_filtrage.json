@@ -1,0 +1,23 @@
+{
+  "n_sujets_source": 432,
+  "n_sujets_retenus": 409,
+  "n_exclus": 23,
+  "exclusions_par_motif": {
+    "test_attendu_indisponible": 23
+  },
+  "test_attendu_indisponible_par_test": {
+    "AWST03P_Vocabulary": 4,
+    "BEN_RRW_FiguralMemory": 5,
+    "BKW_1_5_VerbalMemory": 8,
+    "BKW_RWfv": 10,
+    "LPS_RRW_ProblemSolving": 2,
+    "RWT_PB2RW_PhonematicFluency": 4,
+    "RWT_PGR2RW_PhonematicFluency_Switch": 5,
+    "RWT_SB2RW_SemanticFluency": 3,
+    "RWT_SSF2RW_SemanticFluency_Switch": 3,
+    "Stroop_T3T2_Interference": 2,
+    "TMT_BA_ConceptShifting": 1,
+    "ZNS_ARW_digitspan_bw": 1,
+    "ZNS_AVW_digitspan_fw": 1
+  }
+}

@@ -1,100 +1,253 @@
 /home/aurelio/Server/Aurelio_Stage_M2
+├── .gitignore
 ├── architecture_projet.txt
 ├── archives
-│   └── patches
-│       └── couleurs_1000brains.patch
 ├── article_scientifique
-│   ├── Battaglia-Dynamic Functional Connectivity between order and randomness and its evolution across the human adult lifespan-2020-NeuroImage.pdf
-│   ├── Deco-Emerging concepts for the dynamical organization of resting-state activity in the brain-2011-Nature Reviews Neuroscience.pdf
-│   ├── Hansen-Functional connectivity dynamics- modeling the switching behavior of the resting state--2015-NeuroImage.pdf
-│   ├── journal.pbio.3003916.pdf
-│   └── README.md
+│   ├── Battaglia-Dynamic Functional Connectivity between order and randomness and its evolution across the human adult lifespan-2020-NeuroImage.pdf
+│   ├── Deco-Emerging concepts for the dynamical organization of resting-state activity in the brain-2011-Nature Reviews Neuroscience.pdf
+│   ├── Hansen-Functional connectivity dynamics- modeling the switching behavior of the resting state--2015-NeuroImage.pdf
+│   ├── journal.pbio.3003916.pdf
+│   └── README.md
 ├── atlas
-│   ├── coordonnees_M1.csv
-│   └── labels_M1.txt
-├── cahier_labo_november.md
+│   ├── coordonnees_M1.csv
+│   └── labels_M1.txt
+├── cahier_labo.md
 ├── config
-│   ├── cluster.env
-│   ├── cognition.json
-│   ├── cohorte.csv
-│   ├── jumeau.json
-│   ├── pilote.json
-│   └── suivi.json
+│   ├── cluster.env
+│   ├── cognition.json
+│   ├── cohorte.csv
+│   ├── jumeau.json
+│   ├── pilote.json
+│   ├── pilote_ordre_M1_20261120T150810Z.json
+│   └── suivi.json
 ├── env
-│   ├── requirements-1000brains.txt
-│   └── version.txt
-├── .gitignore
+│   ├── requirements-1000brains.txt
+│   └── version.txt
 ├── memoire
-│   └── README.md
+│   └── README.md
 ├── output
-│   ├── 01_apercu_sc_fc
-│   │   ├── 20261120T102605678818Z_sub-0001_ses-1_V4
-│   │   │   ├── data
-│   │   │   │   ├── fc_v1.npy
-│   │   │   │   ├── fc_v4.npy
-│   │   │   │   └── sc.npy
-│   │   │   ├── figures
-│   │   │   │   ├── fc_v1.pdf
-│   │   │   │   ├── fc_v1.png
-│   │   │   │   ├── fc_v4_adaptee.pdf
-│   │   │   │   ├── fc_v4_adaptee.png
-│   │   │   │   ├── fc_v4.pdf
-│   │   │   │   ├── fc_v4.png
-│   │   │   │   ├── sc.pdf
-│   │   │   │   └── sc.png
-│   │   │   ├── logs
-│   │   │   │   └── run.log
-│   │   │   ├── manifest.json
-│   │   │   └── README.md
-│   │   └── README.md
-│   ├── 02_comparaison_fcd_v1_v4
-│   │   ├── 20261120T104758822168Z_sub-0001_ses-1_V4
-│   │   │   ├── data
-│   │   │   │   ├── fcd_v1.npy
-│   │   │   │   ├── fcd_v4.npy
-│   │   │   │   ├── resume.json
-│   │   │   │   └── starts_TR.npy
-│   │   │   ├── figures
-│   │   │   │   ├── fcd_v1.pdf
-│   │   │   │   ├── fcd_v1.png
-│   │   │   │   ├── fcd_v4.pdf
-│   │   │   │   └── fcd_v4.png
-│   │   │   ├── logs
-│   │   │   │   └── run.log
-│   │   │   ├── manifest.json
-│   │   │   └── README.md
-│   │   └── README.md
-│   ├── 02_fcd_bold_10vol
-│   │   ├── 20261120T100504Z_sub-0001_ses-1_V4
-│   │   │   ├── data
-│   │   │   │   ├── fcd.npy
-│   │   │   │   └── starts_TR.npy
-│   │   │   ├── figures
-│   │   │   │   ├── fcd_article_cap05.pdf
-│   │   │   │   ├── fcd_article_cap05.png
-│   │   │   │   ├── fcd_article.pdf
-│   │   │   │   └── fcd_article.png
-│   │   │   ├── logs
-│   │   │   │   └── run.log
-│   │   │   ├── manifest.json
-│   │   │   └── README.md
-│   │   └── README.md
-│   └── README.md
+│   ├── 01_population
+│   │   ├── 01_metadonnees
+│   │   │   ├── 20261124T160858261377Z
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 02_scores_cognitifs
+│   │   │   ├── 20261124T160858261377Z
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 03_audit_manquants
+│   │   │   ├── 20261124T160858261377Z
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 04_second_scan
+│   │   │   ├── 20261124T160858261377Z
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 05_tests_complets
+│   │   │   ├── 20261124T160858261377Z
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   └── 06_descriptifs
+│   │       ├── 20261124T160858261377Z
+│   │       │   ├── data
+│   │       │   ├── figures
+│   │       │   ├── logs
+│   │       │   ├── manifest.json
+│   │       │   └── README.md
+│   │       └── README.md
+│   ├── 02_pilote
+│   │   ├── 01_controle
+│   │   │   ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 02_accord_fc
+│   │   │   ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 03_apercu_sc_fc
+│   │   │   ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 04_sc_fc
+│   │   │   ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 05_dynamique_m1
+│   │   │   ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 06_fcd_v1_v4
+│   │   │   ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 07_cibles_2026
+│   │   │   ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 08_graphes
+│   │   │   ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 09_distance
+│   │   │   ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 10_rich_club
+│   │   │   ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   └── 11_modules_mc
+│   │       ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │       │   ├── data
+│   │       │   ├── figures
+│   │       │   ├── logs
+│   │       │   ├── manifest.json
+│   │       │   └── README.md
+│   │       └── README.md
+│   ├── 03_jumeau
+│   │   ├── 01_simulation
+│   │   │   ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 02_comparaison
+│   │   │   ├── 20261124T160858261377Z_sub-0001_ses-1_V4
+│   │   │   │   ├── data
+│   │   │   │   ├── figures
+│   │   │   │   ├── logs
+│   │   │   │   ├── manifest.json
+│   │   │   │   └── README.md
+│   │   │   └── README.md
+│   │   ├── 04_ajuster_mfm
+│   │   │   ├── balayages
+│   │   │   │   ├── 20261125T095204182343Z_sub-0001_ses-1_V4
+│   │   │   │   ├── 20261125T100910603580Z_sub-0001_ses-1_V4
+│   │   │   │   ├── 20261125T135012253504Z_sub-0001_ses-1_V4
+│   │   │   │   └── README.md
+│   │   │   └── fc_dfc
+│   │   │       ├── 20261125T142342234738Z_sub-0001_ses-1_V4
+│   │   │       └── README.md
+│   │   ├── 05_ajuster_tmfm
+│   │   │   ├── amplitudes_G
+│   │   │   │   ├── 20261126T091953613714Z_sub-0001_ses-1_V4
+│   │   │   │   └── README.md
+│   │   │   └── pilote_G
+│   │   │       ├── 20261126T085314191996Z_sub-0001_ses-1_V4
+│   │   │       └── README.md
+│   │   └── 06_evaluation
+│   │       ├── 20261125T140339375242Z_sub-0001_ses-1_V4
+│   │       │   ├── data
+│   │       │   ├── figures
+│   │       │   ├── logs
+│   │       │   ├── manifest.json
+│   │       │   └── README.md
+│   │       ├── README.md
+│   │       └── signal_global
+│   │           ├── 20261125T144754688818Z_sub-0001_ses-1_V4
+│   │           └── README.md
+│   ├── 04_exports
+│   │   └── 20261124T160858261377Z
+│   │       ├── 20261124T160858261377Z_sub-0001_ses-1_V4_figures_20261125T090036825148Z.zip
+│   │       ├── pilote.json
+│   │       ├── relance.log
+│   │       ├── reprise.lock
+│   │       └── reprise.log
+│   └── README.md
 ├── README.md
 ├── script
-│   ├── apercu_sc_fc.sh
-│   ├── architecture_tree.sh
-│   ├── cognition.py
-│   ├── cohorte.py
-│   ├── commun.py
-│   ├── comparer_fcd_v1_v4.sh
-│   ├── dynamique.py
-│   ├── graphes.py
-│   ├── jumeau.py
-│   ├── lancer_1000brains.sh
-│   ├── pipeline.py
-│   ├── README.md
-│   └── retracer_fcd.py
+│   ├── apercu_sc_fc.sh
+│   ├── architecture_tree.sh
+│   ├── audits
+│   │   ├── ajuster_fc_dfc.py
+│   │   ├── balayer_amplitude.pyz
+│   │   ├── comparer_jumeau.py
+│   │   ├── confirmer_mfm.py
+│   │   ├── controle_jumeau.py
+│   │   ├── essai_tmfm.pyz
+│   │   ├── explorer_mfm.py
+│   │   ├── filtrer_second_scan.py
+│   │   ├── manquants.py
+│   │   ├── relancer_descriptifs.py
+│   │   ├── reprendre_rich_club.sh
+│   │   ├── retracer_modules_mc.py
+│   │   └── signal_global.py
+│   ├── cognition.py
+│   ├── cohorte.py
+│   ├── commun.py
+│   ├── comparer_fcd_v1_v4.sh
+│   ├── decrire_second_scan.py
+│   ├── dynamique.py
+│   ├── extraire_second_scan.py
+│   ├── graphes.py
+│   ├── jumeau.py
+│   ├── lancer_1000brains.sh
+│   ├── metadonnees.py
+│   ├── pipeline.py
+│   ├── README.md
+│   ├── relancer_workflow.py
+│   ├── rendu_pilote.py
+│   └── retracer_fcd.py
 └── WORKFLOW_1000BRAINS.md
-
-25 directories, 73 files

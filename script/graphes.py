@@ -5,6 +5,7 @@ import networkx as nx
 import numpy as np
 
 from commun import EDGE, figure, heatmap, write_json, write_table
+from audits.retracer_modules_mc import render as render_modules_mc
 
 
 def partition(weights, gamma, seed):
@@ -112,9 +113,7 @@ def modules_mc(out, mc, seed, names):
     np.fill_diagonal(weights, 0)
     ids, modularity = bct.community_louvain(weights, gamma=1, seed=seed)
     order = np.argsort(ids, kind="stable")
-    # Display every fifth edge; full order and assignments are exported.
-    mini = order[::5]
-    heatmap(out, "modules_mc", mc[np.ix_(mini,mini)], "Méta-connectivité triée par module", "Lien trié (× 5)", style="mc_m1")
+    render_modules_mc(out, mc, ids)
     write_table(out / "data/modules.csv", ["edge_0","roi_i","roi_j","module"], (
         (i,names[EDGE[0][i]],names[EDGE[1][i]],int(ids[i])) for i in order))
     write_json(out / "data/metrics.json", {"Q":float(modularity), "n_modules":len(np.unique(ids))})

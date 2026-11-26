@@ -1,0 +1,34 @@
+{
+  "volumes_retenus": 296,
+  "tr_secondes": 2.0,
+  "fenetre_cibles_volumes": 30,
+  "fenetre_fcd_figure_volumes": 10,
+  "fcd_figure_shape": [
+    287,
+    287
+  ],
+  "fcd_cibles_shape": [
+    267,
+    267
+  ],
+  "n_vitesses_mfm": 42,
+  "fc_bornes_affichage_z_empirique": [
+    -0.03775148846209049,
+    1.0131965255737296
+  ],
+  "fc_source_empirique_figure": "sub-0001_FC_connectivitymatrix_corr_fisherz_Schaefer_100P_7NW_V4.txt",
+  "fc_palette": "turbo",
+  "fc_source_metriques_pearson": "BOLD empirique et simulé sur la même grille",
+  "sc_source_empirique": "SC/sub-0001/ses-1/SC/sub-0001_ses-1_gibbs_eddy_clean_1p25mm_csd_tracks_act_10M_sift2_atlas-Schaefer2018_desc-100Parcels7Networks_dseg_CM.txt",
+  "sc_bornes_affichage_empirique": [
+    0,
+    1
+  ],
+  "normalisation_sc": "column_max",
+  "fc_correlation_entre_liens": 0.2838491174783471,
+  "fc_mae_pearson": 0.3343541892474057,
+  "fc_rmse_pearson": 0.38170423888019245,
+  "nu_mediane_empirique": 0.5938495186614519,
+  "nu_mediane_mfm": 0.5915161202340385,
+  "distance_euclidienne_cibles": 0.25274922963899593
+}

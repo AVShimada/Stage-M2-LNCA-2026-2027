@@ -1,0 +1,14 @@
+{
+  "controle": {
+    "G": 0.05,
+    "sigma": 0.03,
+    "erreur_ajustement": 1.1251079327791693,
+    "erreur_validation": 1.122597615782277
+  },
+  "meilleur_sur_grille": {
+    "G": 0.4,
+    "sigma": 0.06,
+    "erreur_ajustement": 0.42352314129444646,
+    "erreur_validation": 0.39922908796110335
+  }
+}

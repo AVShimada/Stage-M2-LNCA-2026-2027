@@ -1,0 +1,98 @@
+{
+  "status": "complete",
+  "started": "2026-11-25T08:59:55.884987+00:00",
+  "configuration": {
+    "atlas": "Schaefer 100",
+    "subject": "sub-0001",
+    "session": "ses-1",
+    "version": "V4",
+    "dataset_root": "/home/aurelio/Server/Aurelio_Stage_M2/1kBrains",
+    "bold": "FC/sub-0001/ses-1/FC/Schaefer_100_7NW/sub-0001_ses-1_FC_TS_Schaefer_100P_7NW_V4.txt",
+    "ts_dimensions": "FC/sub-0001/ses-1/FC/Schaefer_100_7NW/sub-0001_ses-1_FC_TSdim_Schaefer_100P_7NW_(V4.txt",
+    "fc_reference_z": "FC/sub-0001/ses-1/FC/Schaefer_100_7NW/sub-0001_FC_connectivitymatrix_corr_fisherz_Schaefer_100P_7NW_V4.txt",
+    "sc": "SC/sub-0001/ses-1/SC/sub-0001_ses-1_gibbs_eddy_clean_1p25mm_csd_tracks_act_10M_sift2_atlas-Schaefer2018_desc-100Parcels7Networks_dseg_CM_log.txt",
+    "sc_weights": "SIFT2 CM_log",
+    "labels_bold": "/home/aurelio/Server/Aurelio_Stage_M2/atlas/labels_M1.txt",
+    "labels_sc": "/home/aurelio/Server/Aurelio_Stage_M2/atlas/labels_M1.txt",
+    "bold_orientation": "time_regions",
+    "tr_seconds": 2.0,
+    "censor_mode": "none",
+    "timing_note": "Hypothèses du pilote : TR repris des scripts V1, 296 lignes V4 supposées consécutives, sans exclusion supplémentaire.",
+    "censor_file": "",
+    "original_volume_count": null,
+    "preprocessing_reference": "",
+    "coordinates_csv": "/home/aurelio/Server/Aurelio_Stage_M2/atlas/coordonnees_M1.csv",
+    "seed": 42,
+    "m1": {
+      "speed_definition": "pooled_sliding",
+      "max_volumes_for_speed": null,
+      "surrogates": 1
+    },
+    "graphs": {
+      "repeats": 100,
+      "resolution": 1.3,
+      "agreement_threshold": 0.5,
+      "rich_club_nulls": 100
+    },
+    "roi_order_note": "Pilote technique : ordre commun repris du M1, à confirmer pour le BOLD et la SC."
+  },
+  "command": [
+    "script/pipeline.py",
+    "modules-mc",
+    "--config",
+    "output/04_exports/20261124T160858261377Z/pilote.json",
+    "--run",
+    "20261124T160858261377Z"
+  ],
+  "code_sha256": {
+    "cognition.py": "3989c8e3d2e81afed4122a91429849704eb75c55156b825f351220ce484ce33d",
+    "cohorte.py": "b63359d77144b694f3bca464b2fa0c38be29b6443810662f9cca2ec8b62b9b48",
+    "commun.py": "2913d7465e2914afcdc0a137e1051f3a15dd6973dde64234c7c6d2a4fd1e4f11",
+    "decrire_second_scan.py": "b3202269b01b23dca19973cce2f05df4f514d020bb0718c4bbd54b229146c1df",
+    "dynamique.py": "04425ddc1a56cede742cd4a1ab1d02dec1a8001e14881b06c400a430eeda57b2",
+    "extraire_second_scan.py": "844b8b373c9929a30112f0502632510b54a0422ed20737ef00b25ef4206c9c18",
+    "graphes.py": "fe1959c805e2a2ea3e5417bec28580123e1f7517e0358b7f75923f0d1fd1f84a",
+    "jumeau.py": "e1f056f45f404f22404bbd406098a92cecaba769dad57bed0966371530596ce0",
+    "metadonnees.py": "f1f59fa6977ff8e7e91682339624f0dad7fcc76aa3c5d9f315683ea7867c0014",
+    "pipeline.py": "41751fff38fdaf950fb48fce0d2f131a25a8fbe46298ade01028aa40ec15fd92",
+    "relancer_workflow.py": "cfd15a1778c2b21a9b110a6449a09276bfe747134a886bf0fdb6baf48b0e385a",
+    "rendu_pilote.py": "730a8c0f083d650cbfbde1a334131ef35a91cad2432c4a37a8af3f1d665d6204",
+    "retracer_fcd.py": "3beb858e85e6a9706b3ed979a22d08a463b83920485a9d4fde075c0ee6c1c519"
+  },
+  "environment": {
+    "python": "3.12.3",
+    "numpy": "2.5.5",
+    "scipy": "1.18.1",
+    "numba": "0.68.1",
+    "bctpy": "0.6.1",
+    "networkx": "3.7",
+    "matplotlib": "3.11.2"
+  },
+  "inputs": {
+    "bold": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/1kBrains/FC/sub-0001/ses-1/FC/Schaefer_100_7NW/sub-0001_ses-1_FC_TS_Schaefer_100P_7NW_V4.txt",
+      "sha256": "6f009a752e0947c70f0d6672c9d78859e0a9ebd2ce9da20b14636020480b187a"
+    },
+    "sc": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/1kBrains/SC/sub-0001/ses-1/SC/sub-0001_ses-1_gibbs_eddy_clean_1p25mm_csd_tracks_act_10M_sift2_atlas-Schaefer2018_desc-100Parcels7Networks_dseg_CM_log.txt",
+      "sha256": "a98656f9f011d9c39615c89dc210204c34acb7743689ed38b3104af43ed57d73"
+    },
+    "labels_bold": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/atlas/labels_M1.txt",
+      "sha256": "8797afee8698aa876211b39d999ede34653f3c7eb4a44d978696f4648fad2da1"
+    },
+    "labels_sc": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/atlas/labels_M1.txt",
+      "sha256": "8797afee8698aa876211b39d999ede34653f3c7eb4a44d978696f4648fad2da1"
+    },
+    "source_m1": {
+      "path": "/home/aurelio/Server/Aurelio_Stage_M2/output/02_pilote/05_dynamique_m1/20261124T160858261377Z_sub-0001_ses-1_V4/manifest.json",
+      "sha256": "0f64d8c898aa5b64c8294a6450b9e2a5cf351ce6583d53e66bbed8be00d32bae"
+    }
+  },
+  "job_id": null,
+  "n_volumes_original": 296,
+  "n_volumes_kept": 296,
+  "tr_seconds": 2.0,
+  "finished": "2026-11-25T09:00:08.622295+00:00"
+}

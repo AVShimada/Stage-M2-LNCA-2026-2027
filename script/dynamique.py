@@ -2,7 +2,8 @@
 import math
 import numpy as np
 
-from commun import EDGE, SPEED_STYLES, figure, heatmap, write_json, write_table
+from commun import EDGE, heatmap, write_json, write_table
+from rendu_pilote import fcd_ten_volumes, plot_m1_speeds, plot_static_fc, plot_static_sc, plot_targets
 
 PERCENTILES = (5, 25, 50, 75, 95)
 TARGETS = [f"{v}_p{p}" for v in ("chi", "nu") for p in PERCENTILES]
@@ -86,7 +87,7 @@ def validation(x, sc, stream, mc):
             for p, q in zip((5, 50, 95), np.percentile(v, [5, 50, 95]))}, lam
 
 
-def static(out, x, sc, names):
+def static(out, x, sc, names, sc_weights="Poids fournis"):
     r = fc(x)
     np.save(out / "data/fc_r.npy", r)
     np.save(out / "data/sc.npy", sc)
@@ -107,8 +108,8 @@ def static(out, x, sc, names):
     write_json(out / "data/metrics.json", metrics)
     write_table(out / "data/edges.csv", ["edge_0", "roi_i", "roi_j"],
                 ((k, names[i], names[j]) for k, (i, j) in enumerate(zip(*EDGE))))
-    heatmap(out, "fc", r, "FC statique · corrélation de Pearson")
-    heatmap(out, "sc", sc, "Connectivité structurelle · poids fournis", signed=False)
+    plot_static_fc(out, z)
+    plot_static_sc(out, sc, sc_weights)
 
 
 def phase_random(x, grid, rng):
@@ -181,16 +182,7 @@ def m1(out, x, grid, tr, cfg):
     write_table(data / "speeds_multiscale.csv", ["range","rep","type","width_TR","first_volume_0","nu"], rows)
     write_json(data / "metrics.json", stats)
     write_json(data / "omissions.json", sorted(set(tuple(v) for v in skipped)))
-    def draw(fig, ax):
-        for kind in ("emp", "phase", "shuffle"):
-            v = [r[-1] for r in rows if r[0] == "mid" and r[2] == kind]
-            if v:
-                color, line = SPEED_STYLES[kind]
-                ax.hist(v, bins=np.linspace(0,2,41), density=True, histtype="step", label=kind,
-                        color=color, linestyle=line, linewidth=2)
-        ax.set(xlabel="Vitesse (1 − r)", ylabel="Densité", title="Vitesses dFC · fenêtres moyennes M1")
-        ax.legend()
-    figure(out, "vitesses", draw, dark=True)
+    plot_m1_speeds(out, ((scale, kind, value) for scale, _, kind, _, _, value in rows))
 
 
 def empirical_targets(out, x, grid, tr, sc):
@@ -204,13 +196,13 @@ def empirical_targets(out, x, grid, tr, sc):
     write_table(data / "coupling.csv", ["first_volume_0", "lambda"], zip(starts, lam))
     write_json(data / "targets.json", dict(zip(TARGETS, target.tolist())))
     write_json(data / "validation.json", checks)
-    write_json(data / "windows.json", dict(width_TR=volumes(60,tr), step_TR=volumes(2,tr),
-               width_s=tr*volumes(60,tr), step_s=tr*volumes(2,tr), n_chi=len(chi), n_nu=len(nu)))
-    heatmap(out, "fcd", fcd, "FCD · profil 2026", "Fenêtre retenue", style="fcd_article")
-    def draw(fig, ax):
-        for vals, label, line in ((chi, "χ · récurrence", "-"), (nu, "ν · vitesse", "--")):
-            ax.hist(vals, bins=40, density=True, histtype="step", label=label, color="black", linestyle=line)
-        ax.set(xlabel="Valeur", ylabel="Densité", title="Distributions utilisées pour ajuster le jumeau")
-        ax.legend()
-    figure(out, "distributions", draw)
+    width, step = volumes(60, tr), volumes(2, tr)
+    fcd_ten = fcd_ten_volumes(x, grid)
+    if fcd_ten is not None:
+        np.save(data / "fcd_10_volumes.npy", fcd_ten, allow_pickle=False)
+    write_json(data / "windows.json", dict(width_TR=width, step_TR=step, width_s=tr*width,
+               step_s=tr*step, n_chi=len(chi), n_nu=len(nu), fichier_fcd_cibles="fcd.npy",
+               fichier_fcd_figure="fcd_10_volumes.npy" if fcd_ten is not None else None,
+               figure_width_TR=10, figure_step_TR=1))
+    plot_targets(out, fcd_ten, chi, nu)
 

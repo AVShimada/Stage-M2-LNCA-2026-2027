@@ -1,0 +1,53 @@
+{
+  "mode": "series",
+  "n_volumes": 296,
+  "n_liens": 4950,
+  "graine_jumeau": 301,
+  "series": {
+    "V1": {
+      "variance_signal_moyen": 0.04328612387655799,
+      "r2_regional_moyen": 0.1270428034832166,
+      "mediane_fc_avant": 0.0117872639746549,
+      "mediane_fc_apres": -0.0445114135749546
+    },
+    "V4": {
+      "variance_signal_moyen": 0.39799333264221187,
+      "r2_regional_moyen": 0.4080098401165423,
+      "mediane_fc_avant": 0.38797494710505176,
+      "mediane_fc_apres": -0.03978841368839871
+    },
+    "Jumeau": {
+      "variance_signal_moyen": 0.08968654215291955,
+      "r2_regional_moyen": 0.09631586621032659,
+      "mediane_fc_avant": 0.03881357469007039,
+      "mediane_fc_apres": -0.05478535831071099
+    }
+  },
+  "comparaisons": {
+    "V1 / V4": {
+      "avant": {
+        "rmse": 0.39231723091821624,
+        "biais_moyen": 0.3582901098642969,
+        "correlation_profils": 0.8514358860495652
+      },
+      "apres": {
+        "rmse": 0.08575208470596529,
+        "biais_moyen": -1.1839804006148547e-05,
+        "correlation_profils": 0.9552297161702933
+      }
+    },
+    "V4 / Jumeau": {
+      "avant": {
+        "rmse": 0.38170423888019245,
+        "biais_moyen": -0.31142100049423466,
+        "correlation_profils": 0.28384911747834723
+      },
+      "apres": {
+        "rmse": 0.2882680224280103,
+        "biais_moyen": -0.0002027061646252889,
+        "correlation_profils": 0.3240553950363026
+      }
+    }
+  },
+  "correlation_signaux_moyens_V1_V4": 0.2756070122596313
+}
